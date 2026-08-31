@@ -1,0 +1,107 @@
+:host {
+  display: block;
+  max-width: 850px;
+  margin: 32px auto;
+  padding: 32px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(31, 41, 55, 0.12);
+}
+input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 10px 0;
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+button {
+  margin: 6px 6px 6px 0;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  background-color: #2563eb;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #1d4ed8;
+}
+button.botao-perigo {
+  background-color: #dc2626;
+}
+
+button.botao-perigo:hover {
+  background-color: #b91c1c;
+}
+
+button.botao-sucesso {
+  background-color: #16a34a;
+}
+
+button.botao-sucesso:hover {
+  background-color: #15803d;
+}
+
+button.botao-secundario {
+  background-color: #64748b;
+}
+
+button.botao-secundario:hover {
+  background-color: #475569;
+}
+.cartao-chamado {
+  margin-top: 16px;
+  padding: 20px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background-color: #f8fafc;
+}
+
+.cartao-chamado h3 {
+  margin-top: 0;
+  color: #1e3a8a;
+}
+
+@media (max-width: 600px) {
+  :host {
+    margin: 16px auto;
+    padding: 20px;
+    border-radius: 10px;
+  }
+
+  button {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 6px 0;
+  }
+
+  .cartao-chamado {
+    padding: 16px;
+  }
+}
+
+.mensagem-erro {
+  color: #b91c1c;
+  font-weight: 600;
+}
+
+.mensagem-sucesso {
+  color: #15803d;
+  font-weight: 600;
+}
+
+.status-aberto {
+  color: #c2410c;
+  font-weight: 600;
+}
+
+.status-resolvido {
+  color: #15803d;
+  font-weight: 600;
+}

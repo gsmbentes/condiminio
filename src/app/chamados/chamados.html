@@ -1,0 +1,107 @@
+<h2>Chamados do condomínio</h2>
+<p>Você entrou como: {{ perfil }}</p>
+
+@if (telaChamados === 'lista') {
+  @if (perfil === 'sindico') {
+  <button class="botao-secundario"  (click)="abrirHistorico()">
+    Ver histórico de chamados
+  </button>
+}
+
+@if (perfil === 'morador') {
+  <h3>Novo chamado</h3>
+
+  <input #descricaoInput placeholder="Descrição do chamado">
+
+  <input
+    #gravidadeInput
+    type="number"
+    min="1"
+    max="10"
+    placeholder="Gravidade (1 a 10)">
+
+  <button (click)="adicionarChamado(descricaoInput, gravidadeInput)">
+    Adicionar chamado
+  </button>
+  @if (mensagemErro !== '') {
+  <p class="mensagem-erro">{{ mensagemErro }}</p>
+}
+@if (mensagemSucesso !== '') {
+  <p class="mensagem-sucesso">{{ mensagemSucesso }}</p>
+}
+}
+<hr>
+@if (perfil === 'morador') {
+  <p>Meus chamados: {{ chamadosDoMorador().length }}</p>
+  <p>Meus chamados aguardando atendimento: {{ quantidadeAbertosDoMorador() }}</p>
+} @else {
+  <p>Quantidade de chamados: {{ chamados.length }}</p>
+  <p>Chamados aguardando atendimento: {{ quantidadeAbertos() }}</p>
+}
+
+@if (perfil === 'morador' && chamadosDoMorador().length === 0) {
+  <p>Você ainda não abriu nenhum chamado.</p>
+}
+@if (perfil === 'sindico' && chamados.length === 0) {
+  <p>Não há chamados no momento.</p>
+}
+
+@for (
+  chamado of (perfil === 'morador' ? chamadosDoMorador() : chamados);
+  track chamado.descricao
+) {
+  <article class="cartao-chamado">
+  @if (chamado.gravidade >= 7) {
+    <h3>CHAMADO GRAVE</h3>
+  } @else {
+    <h3>Chamado normal</h3>
+  }
+
+  <p>Descrição: {{ chamado.descricao }}</p>
+  <p>Gravidade: {{ chamado.gravidade }}</p>
+  <p [class]="chamado.status === 'aberto' ? 'status-aberto' : 'status-resolvido'">
+  Status: {{ chamado.status }}
+</p>
+  @if (perfil === 'sindico') {
+  <p>Criado por: {{ chamado.criadoPor }}</p>
+}
+
+  @if (chamado.status === 'aberto') {
+  @if (perfil === 'sindico') {
+    <button class="botao-sucesso" (click)="resolver(chamado)">
+    Resolver chamado
+    </button>
+  }
+
+  <p>Aguardando atendimento.</p>
+  } @else {
+  <p>Chamado finalizado.</p>
+  }
+
+  <button  class="botao-perigo"  (click)="removerChamado(chamado)">Excluir chamado</button>
+
+  </article>
+}
+}
+
+@if (telaChamados === 'historico') {
+  <button class="botao-secundario"  (click)="voltarParaChamados()">
+    Voltar para chamados
+  </button>
+
+<h2>Histórico de chamados excluídos</h2>
+
+@if (historicoDoSindico().length === 0) {
+  <p>Nenhum chamado foi excluído pelo síndico.</p>
+} @else {
+ @for (chamado of historicoDoSindico(); track chamado.descricao) {
+    <p>Descrição: {{ chamado.descricao }}</p>
+    <p>Gravidade: {{ chamado.gravidade }}</p>
+    <p>Status quando foi excluído: {{ chamado.status }}</p>
+    <button class="botao-sucesso"   (click)="recuperarChamado(chamado)">
+    Recuperar chamado
+    </button>
+    <hr>
+  }
+}
+}

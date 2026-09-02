@@ -70,10 +70,17 @@
 </div>
 
 <button
-  class="botao-entrar"
-  (click)="fazerLogin(identificadorInput.value, senhaInput.value)">
-  Entrar
+class="botao-entrar"
+(click)="fazerLogin(identificadorInput.value, senhaInput.value)">
+Entrar
 </button>
+@if (perfil_selecionado === 'morador') {
+  <button
+    class="botao-voltar"
+    (click)="abrirCadastroMorador()">
+    Primeiro acesso: cadastrar-se
+  </button>
+}
 
 @if (erroLogin !== '') {
   <p class="mensagem-erro">{{ erroLogin }}</p>
@@ -81,11 +88,54 @@
 </section>
 }
 @if (telaAtual === 'sistema') {
-   <button class="botao-voltar" (click)="sair()">
-  sair do app
-</button>
+  @if (perfil_selecionado === 'sindico') {
+    <button class="botao-voltar" (click)="voltarParaPainelSindico()">
+      Voltar ao painel do síndico
+    </button>
+  }
+  @if (perfil_selecionado === 'morador') {
+    <button class="botao-voltar" (click)="sair()">
+    Sair do app
+  </button>
+  }
+
   <app-chamados
-  [perfil]="perfil_selecionado"
-  [usuarioLogado]="usuarioLogado">
-</app-chamados>
+    [perfil]="perfil_selecionado"
+    [usuarioLogado]="usuarioLogado">
+  </app-chamados>
+}
+@if (telaAtual === 'painelSindico') {
+  <section class="cartao-acesso">
+    <h2>Painel do Síndico</h2>
+    <p>Escolha uma função para gerenciar o condomínio.</p>
+
+    <button class="card-perfil" (click)="abrirChamados()">
+    <strong>Gerenciar chamados</strong>
+    <span>Resolva, exclua e veja o histórico de chamados.</span>
+    </button>
+
+
+    <button class="card-perfil" (click)="abrirMoradores()">
+    <strong>Cadastro de moradores</strong>
+    <span>Cadastre e consulte os moradores do condomínio.</span>
+    </button>
+
+    <button class="botao-voltar" (click)="sair()">
+      Sair do app
+    </button>
+  </section>
+}
+@if (telaAtual === 'moradores') {
+  <button class="botao-voltar" (click)="voltarParaPainelSindico()">
+    Voltar ao painel do síndico
+  </button>
+
+  <app-moradores></app-moradores>
+} 
+@if (telaAtual === 'cadastroMorador') {
+  <button class="botao-voltar" (click)="voltarParaLogin()">
+    Voltar ao login
+  </button>
+
+  <app-cadastro-morador></app-cadastro-morador>
 }

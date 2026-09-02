@@ -1,0 +1,40 @@
+<section class="cartao-cadastro-morador">
+  <h2>Primeiro acesso do morador</h2>
+  <p>Preencha seus dados e informe o código entregue pelo síndico.</p>
+
+  <div class="campo-cadastro">
+    <label for="nome">Nome</label>
+    <input id="nome" #nomeInput type="text" placeholder="Digite seu nome">
+  </div>
+
+  <div class="campo-cadastro">
+    <label for="sobrenome">Sobrenome</label>
+    <input id="sobrenome" #sobrenomeInput type="text" placeholder="Digite seu sobrenome">
+  </div>
+
+  <div class="campo-cadastro">
+    <label for="telefone">Telefone</label>
+    <input id="telefone" #telefoneInput type="tel" placeholder="Ex.: (92) 99999-9999">
+  </div>
+
+  <div class="campo-cadastro">
+    <label for="cpf">CPF</label>
+    <input id="cpf" #cpfInput type="text" placeholder="Digite seu CPF">
+  </div>
+
+  <div class="campo-cadastro">
+    <label for="codigo">Código entregue pelo síndico</label>
+    <input id="codigo" #codigoInput type="text" placeholder="Ex.: MOR-001">
+  </div>
+
+  <button
+  (click)="finalizarCadastro(
+    nomeInput.value,
+    sobrenomeInput.value,
+    telefoneInput.value,
+    cpfInput.value,
+    codigoInput.value
+  )">
+  Finalizar cadastro
+</button>
+</section>

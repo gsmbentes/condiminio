@@ -7,7 +7,8 @@
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(31, 41, 55, 0.12);
 }
-input {
+input,
+textarea {
   display: block;
   width: 100%;
   box-sizing: border-box;
@@ -16,6 +17,14 @@ input {
   border: 1px solid #cbd5e1;
   border-radius: 8px;
   font-size: 16px;
+}
+
+textarea {
+  min-height: 48px;
+  resize: none;
+  overflow: hidden;
+  font-family: inherit;
+  line-height: 1.5;
 }
 
 button {
@@ -208,6 +217,14 @@ button.botao-secundario:hover {
   text-align: center;
 }
 
+.acoes-conversa {
+  display: flex;
+  gap: 10px;
+  padding: 16px 20px;
+  border-top: 1px solid #dbeafe;
+  background-color: white;
+}
+
 .painel-chamados {
   display: grid;
   grid-template-columns: minmax(260px, 0.8fr) minmax(0, 1.6fr);
@@ -257,6 +274,20 @@ button.botao-secundario:hover {
   .conversa-chamado,
   .conversa-vazia {
     min-height: 300px;
+  }
+
+  .cabecalho-conversa {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .acoes-conversa {
+    flex-direction: column;
+  }
+
+  .acoes-conversa button {
+    width: 100%;
+    margin: 0;
   }
 }
 

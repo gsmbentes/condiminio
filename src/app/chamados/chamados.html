@@ -3,26 +3,22 @@
 
 @if (telaChamados === 'lista') {
   @if (perfil === 'sindico') {
-    <button class="botao-secundario" (click)="abrirHistorico()">
-      Ver histórico de chamados
-    </button>
+    <button class="botao-secundario" (click)="abrirHistorico()">Ver histórico de chamados</button>
   }
 
   @if (perfil === 'morador') {
     <h3>Novo chamado</h3>
 
-    <input #descricaoInput placeholder="Descrição do chamado">
+    <textarea
+      #descricaoInput
+      rows="1"
+      placeholder="Descreva seu chamado"
+      (input)="ajustarAlturaDescricao(descricaoInput)"
+    ></textarea>
 
-    <input
-      #gravidadeInput
-      type="number"
-      min="1"
-      max="10"
-      placeholder="Gravidade (1 a 10)">
+    <input #gravidadeInput type="number" min="1" max="10" placeholder="Gravidade (1 a 10)" />
 
-    <button (click)="adicionarChamado(descricaoInput, gravidadeInput)">
-      Adicionar chamado
-    </button>
+    <button (click)="adicionarChamado(descricaoInput, gravidadeInput)">Adicionar chamado</button>
 
     @if (mensagemErro !== '') {
       <p class="mensagem-erro">{{ mensagemErro }}</p>
@@ -33,7 +29,7 @@
     }
   }
 
-  <hr>
+  <hr />
 
   @if (perfil === 'morador') {
     <p>Meus chamados: {{ chamadosDoMorador().length }}</p>
@@ -51,92 +47,89 @@
     <p>Não há chamados no momento.</p>
   }
 
- <div class="painel-chamados">
-  <div class="lista-conversas">
-    @for (
-      chamado of (perfil === 'morador' ? chamadosDoMorador() : chamados);
-      track chamado.descricao
-    ) {
-      <article
-        class="cartao-chamado"
-        [class.chamado-selecionado]="chamadoSelecionado === chamado"
-        (click)="selecionarChamado(chamado)">
+  <div class="painel-chamados">
+    <div class="lista-conversas">
+      @for (
+        chamado of perfil === 'morador' ? chamadosDoMorador() : chamados;
+        track chamado.descricao
+      ) {
+        <article
+          class="cartao-chamado"
+          [class.chamado-selecionado]="chamadoSelecionado === chamado"
+          (click)="selecionarChamado(chamado)"
+        >
+          @if (chamado.gravidade >= 8) {
+            <p class="prioridade prioridade-urgente">Urgente</p>
+          } @else if (chamado.gravidade >= 4) {
+            <p class="prioridade prioridade-media">Média</p>
+          } @else {
+            <p class="prioridade prioridade-normal">Normal</p>
+          }
 
-        @if (chamado.gravidade >= 8) {
-          <p class="prioridade prioridade-urgente">Urgente</p>
-        } @else if (chamado.gravidade >= 4) {
-          <p class="prioridade prioridade-media">Média</p>
-        } @else {
-          <p class="prioridade prioridade-normal">Normal</p>
-        }
+          <p>Descrição: {{ chamado.descricao }}</p>
 
-        <p>Descrição: {{ chamado.descricao }}</p>
+          <p [class]="chamado.status === 'aberto' ? 'status-aberto' : 'status-resolvido'">
+            Status: {{ chamado.status }}
+          </p>
+        </article>
+      }
+    </div>
 
-        <p [class]="chamado.status === 'aberto' ? 'status-aberto' : 'status-resolvido'">
-          Status: {{ chamado.status }}
-        </p>
-      </article>
+    @if (chamadoSelecionado !== null) {
+      <section class="conversa-chamado">
+        <header class="cabecalho-conversa">
+          <div>
+            <p class="perfil-criador">Perfil: {{ chamadoSelecionado.perfilCriador }}</p>
+
+            <h3>{{ chamadoSelecionado.criadoPor }}</h3>
+          </div>
+
+          @if (chamadoSelecionado.gravidade >= 8) {
+            <span class="prioridade prioridade-urgente">Urgente</span>
+          } @else if (chamadoSelecionado.gravidade >= 4) {
+            <span class="prioridade prioridade-media">Média</span>
+          } @else {
+            <span class="prioridade prioridade-normal">Normal</span>
+          }
+
+          <p>Status: {{ chamadoSelecionado.status }}</p>
+        </header>
+
+        <div class="mensagens-conversa">
+          <article class="mensagem mensagem-recebida">
+            <p>{{ chamadoSelecionado.descricao }}</p>
+            <span>Chamado enviado por {{ chamadoSelecionado.criadoPor }}</span>
+          </article>
+
+          @if (chamadoSelecionado.status === 'aberto') {
+            <p class="aviso-conversa">Aguardando atendimento.</p>
+          } @else {
+            <p class="aviso-conversa">Chamado finalizado.</p>
+          }
+        </div>
+        <div class="acoes-conversa">
+          @if (chamadoSelecionado.status === 'aberto' && perfil === 'sindico') {
+            <button
+              class="botao-sucesso"
+              (click)="pedirConfirmacao('resolver', chamadoSelecionado)"
+            >
+              Resolver chamado
+            </button>
+          }
+
+          <button class="botao-perigo" (click)="pedirConfirmacao('excluir', chamadoSelecionado)">
+            Excluir chamado
+          </button>
+        </div>
+      </section>
+    } @else {
+      <section class="conversa-vazia">Selecione um chamado para visualizar a conversa.</section>
     }
   </div>
-
-  @if (chamadoSelecionado !== null) {
-    <section class="conversa-chamado">
-      <header class="cabecalho-conversa">
-        <div>
-          <p class="perfil-criador">
-            Perfil: {{ chamadoSelecionado.perfilCriador }}
-          </p>
-
-          <h3>{{ chamadoSelecionado.criadoPor }}</h3>
-        </div>
-
-        @if (chamadoSelecionado.gravidade >= 8) {
-          <span class="prioridade prioridade-urgente">Urgente</span>
-        } @else if (chamadoSelecionado.gravidade >= 4) {
-          <span class="prioridade prioridade-media">Média</span>
-        } @else {
-          <span class="prioridade prioridade-normal">Normal</span>
-        }
-
-        <p>Status: {{ chamadoSelecionado.status }}</p>
-      </header>
-
-      <div class="mensagens-conversa">
-        <article class="mensagem mensagem-recebida">
-          <p>{{ chamadoSelecionado.descricao }}</p>
-          <span>Chamado enviado por {{ chamadoSelecionado.criadoPor }}</span>
-        </article>
-
-        @if (chamadoSelecionado.status === 'aberto') {
-          <p class="aviso-conversa">Aguardando atendimento.</p>
-        } @else {
-          <p class="aviso-conversa">Chamado finalizado.</p>
-        }
-      </div>
-      <div class="acoes-conversa">
-  @if (chamadoSelecionado.status === 'aberto' && perfil === 'sindico') {
-    <button class="botao-sucesso" (click)="pedirConfirmacao('resolver', chamadoSelecionado)">
-      Resolver chamado
-    </button>
-  }
-
-  <button class="botao-perigo" (click)="pedirConfirmacao('excluir', chamadoSelecionado)">
-    Excluir chamado
-  </button>
-</div>
-    </section>
-  } @else {
-    <section class="conversa-vazia">
-      Selecione um chamado para visualizar a conversa.
-    </section>
-  }
-</div>
 }
 
 @if (telaChamados === 'historico') {
-  <button class="botao-secundario" (click)="voltarParaChamados()">
-    Voltar para chamados
-  </button>
+  <button class="botao-secundario" (click)="voltarParaChamados()">Voltar para chamados</button>
 
   <h2>Histórico de chamados excluídos</h2>
 
@@ -148,11 +141,9 @@
       <p>Gravidade: {{ chamado.gravidade }}</p>
       <p>Status quando foi excluído: {{ chamado.status }}</p>
 
-      <button class="botao-sucesso" (click)="recuperarChamado(chamado)">
-        Recuperar chamado
-      </button>
+      <button class="botao-sucesso" (click)="recuperarChamado(chamado)">Recuperar chamado</button>
 
-      <hr>
+      <hr />
     }
   }
 }
@@ -168,13 +159,9 @@
       }
 
       <div class="botoes-modal">
-        <button class="botao-secundario" (click)="cancelarConfirmacao()">
-          Cancelar
-        </button>
+        <button class="botao-secundario" (click)="cancelarConfirmacao()">Cancelar</button>
 
-        <button class="botao-perigo" (click)="confirmarAcao()">
-          Confirmar
-        </button>
+        <button class="botao-perigo" (click)="confirmarAcao()">Confirmar</button>
       </div>
     </section>
   </div>

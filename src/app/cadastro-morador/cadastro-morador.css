@@ -1,0 +1,75 @@
+.cartao-cadastro-morador {
+  max-width: 520px;
+  margin: 32px auto;
+  padding: 32px;
+  border-radius: 12px;
+  background-color: white;
+  box-shadow: 0 8px 24px rgba(31, 41, 55, 0.12);
+}
+
+.campo-cadastro {
+  margin-top: 18px;
+}
+
+.campo-cadastro label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.campo-cadastro input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.campo-cadastro input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px #dbeafe;
+}
+
+.cartao-cadastro-morador button {
+  width: 100%;
+  margin-top: 24px;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background-color: #2563eb;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cartao-cadastro-morador button:hover {
+  background-color: #1d4ed8;
+}
+
+.mensagem-erro {
+  margin: 16px 0 0;
+  padding: 12px;
+  border-radius: 8px;
+  background-color: #fef2f2;
+  color: #b91c1c;
+  font-weight: 600;
+}
+
+.mensagem-sucesso {
+  margin: 16px 0 0;
+  padding: 12px;
+  border-radius: 8px;
+  background-color: #f0fdf4;
+  color: #15803d;
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .cartao-cadastro-morador {
+    margin: 16px auto;
+    padding: 20px;
+  }
+}

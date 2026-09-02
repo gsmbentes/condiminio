@@ -8,7 +8,6 @@ type Chamado = {
   perfilCriador: string;
 };
 
-
 @Component({
   imports: [],
   selector: 'app-chamados',
@@ -51,110 +50,115 @@ export class Chamados {
     },
   ];
 
-resolver(chamado: Chamado) {
-  chamado.status = 'resolvido';
-}
-
+  resolver(chamado: Chamado) {
+    chamado.status = 'resolvido';
+  }
 
   quantidadeAbertos() {
-  return this.chamados.filter((chamado) => chamado.status === 'aberto').length;
-}
-adicionarChamado( descricaoInput: HTMLInputElement,gravidadeInput: HTMLInputElement) {
-  const descricao = descricaoInput.value;
-  const gravidade = Number(gravidadeInput.value);
-
-  if (descricao.trim() === '' || gravidade < 1 || gravidade > 10) {
-    this.mensagemSucesso = '';
-    this.mensagemErro = 'Informe uma descrição e uma gravidade entre 1 e 10.';
-    return;
+    return this.chamados.filter((chamado) => chamado.status === 'aberto').length;
   }
-  this.mensagemSucesso = 'Chamado criado com sucesso.';
-  this.mensagemErro = '';
+  adicionarChamado(descricaoInput: HTMLTextAreaElement, gravidadeInput: HTMLInputElement) {
+    const descricao = descricaoInput.value;
+    const gravidade = Number(gravidadeInput.value);
 
-  this.chamados.push({
-  descricao: descricao,
-  gravidade: gravidade,
-  status: 'aberto',
-  criadoPor: this.usuarioLogado,
-  perfilCriador: this.perfil,
-});
+    if (descricao.trim() === '' || gravidade < 1 || gravidade > 10) {
+      this.mensagemSucesso = '';
+      this.mensagemErro = 'Informe uma descrição e uma gravidade entre 1 e 10.';
+      return;
+    }
+    this.mensagemSucesso = 'Chamado criado com sucesso.';
+    this.mensagemErro = '';
 
-descricaoInput.value = '';
-gravidadeInput.value = '';
-}
-selecionarChamado(chamado: Chamado) {
-  this.chamadoSelecionado = chamado;
-}
+    this.chamados.push({
+      descricao: descricao,
+      gravidade: gravidade,
+      status: 'aberto',
+      criadoPor: this.usuarioLogado,
+      perfilCriador: this.perfil,
+    });
 
-removerChamado(chamado: Chamado) {
-  const indice = this.chamados.indexOf(chamado);
-  const chamadoRemovido = this.chamados.splice(indice, 1)[0];
-
-  if (chamadoRemovido) {
-  chamadoRemovido.excluidoPor = this.perfil;
-  this.chamadosExcluidos.push(chamadoRemovido);
-
-  if (this.chamadoSelecionado === chamadoRemovido) {
-    this.chamadoSelecionado = null;
-  }
-  }
-}
-  
-confirmarAcao() {
-  if (this.chamadoParaConfirmar === null) {
-    return;
+    descricaoInput.value = '';
+    this.ajustarAlturaDescricao(descricaoInput);
+    gravidadeInput.value = '';
   }
 
-  if (this.acaoPendente === 'resolver') {
-    this.resolver(this.chamadoParaConfirmar);
+  ajustarAlturaDescricao(descricaoInput: HTMLTextAreaElement) {
+    descricaoInput.style.height = 'auto';
+    descricaoInput.style.height = `${descricaoInput.scrollHeight}px`;
   }
 
-  if (this.acaoPendente === 'excluir') {
-    this.removerChamado(this.chamadoParaConfirmar);
+  selecionarChamado(chamado: Chamado) {
+    this.chamadoSelecionado = chamado;
   }
 
-  this.cancelarConfirmacao();
-}
-abrirHistorico() {
-  this.telaChamados = 'historico';
-}
+  removerChamado(chamado: Chamado) {
+    const indice = this.chamados.indexOf(chamado);
 
-voltarParaChamados() {
-  this.telaChamados = 'lista';
-}
-recuperarChamado(chamado: Chamado) {
-  const indice = this.chamadosExcluidos.indexOf(chamado);
-  const chamadoRecuperado = this.chamadosExcluidos.splice(indice, 1)[0];
+    if (indice === -1) {
+      return;
+    }
 
-  if (chamadoRecuperado) {
-    this.chamados.push(chamadoRecuperado);
+    const chamadoRemovido = this.chamados.splice(indice, 1)[0];
+
+    if (chamadoRemovido) {
+      chamadoRemovido.excluidoPor = this.perfil;
+      this.chamadosExcluidos.push(chamadoRemovido);
+
+      if (this.chamadoSelecionado === chamadoRemovido) {
+        this.chamadoSelecionado = null;
+      }
+    }
   }
-}
 
-chamadosDoMorador() {
-  return this.chamados.filter(
-    (chamado) => chamado.criadoPor === this.usuarioLogado
-  );
-}
-quantidadeAbertosDoMorador() {
-  return this.chamadosDoMorador().filter(
-    (chamado) => chamado.status === 'aberto'
-  ).length;
-}
-historicoDoSindico() {
-  return this.chamadosExcluidos.filter(
-    (chamado) => chamado.excluidoPor === 'sindico'
-  );
-}
-pedirConfirmacao(acao: string, chamado: Chamado) {
-  this.acaoPendente = acao;
-  this.chamadoParaConfirmar = chamado;
-  this.modalAberto = true;
-}
+  confirmarAcao() {
+    if (this.chamadoParaConfirmar === null) {
+      return;
+    }
 
-cancelarConfirmacao() {
-  this.modalAberto = false;
-  this.acaoPendente = '';
-  this.chamadoParaConfirmar = null;
-}
+    if (this.acaoPendente === 'resolver') {
+      this.resolver(this.chamadoParaConfirmar);
+    }
+
+    if (this.acaoPendente === 'excluir') {
+      this.removerChamado(this.chamadoParaConfirmar);
+    }
+
+    this.cancelarConfirmacao();
+  }
+  abrirHistorico() {
+    this.telaChamados = 'historico';
+  }
+
+  voltarParaChamados() {
+    this.telaChamados = 'lista';
+  }
+  recuperarChamado(chamado: Chamado) {
+    const indice = this.chamadosExcluidos.indexOf(chamado);
+    const chamadoRecuperado = this.chamadosExcluidos.splice(indice, 1)[0];
+
+    if (chamadoRecuperado) {
+      this.chamados.push(chamadoRecuperado);
+    }
+  }
+
+  chamadosDoMorador() {
+    return this.chamados.filter((chamado) => chamado.criadoPor === this.usuarioLogado);
+  }
+  quantidadeAbertosDoMorador() {
+    return this.chamadosDoMorador().filter((chamado) => chamado.status === 'aberto').length;
+  }
+  historicoDoSindico() {
+    return this.chamadosExcluidos.filter((chamado) => chamado.excluidoPor === 'sindico');
+  }
+  pedirConfirmacao(acao: string, chamado: Chamado) {
+    this.acaoPendente = acao;
+    this.chamadoParaConfirmar = chamado;
+    this.modalAberto = true;
+  }
+
+  cancelarConfirmacao() {
+    this.modalAberto = false;
+    this.acaoPendente = '';
+    this.chamadoParaConfirmar = null;
+  }
 }

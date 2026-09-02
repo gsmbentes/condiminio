@@ -212,7 +212,7 @@
   padding: 14px;
   border: none;
   border-radius: 10px;
-  background-color: #2563eb;
+  background-color: #020202;
   color: white;
   font-size: 16px;
   font-weight: 600;
@@ -221,7 +221,7 @@
 }
 
 .botao-entrar:hover {
-  background-color: #1d4ed8;
+  background-color: #1f2937;
   transform: translateY(-2px);
 }
 

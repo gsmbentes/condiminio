@@ -1,12 +1,12 @@
 @if (telaAtual === 'login' && perfil_selecionado === 'morador') {
 
-  <h1 class="font">Veritas</h1>
-  <p class="font">Gestão do seu condomínio, num só lugar.</p>
+  <h1 class="font" style="text-align: left;">Veritas</h1>
+  <p class="font" style="text-align: left;">Gestão do seu condomínio, num só lugar.</p>
 
 } @else if (telaAtual === 'cadastroMorador') {
 
-  <h1 class="font">Criar conta</h1>
-  <p class="font">
+  <h1 class="font"  style="text-align: left;">Criar conta</h1>
+  <p class="font" style="text-align: left;">
     Utilize o código de convite enviado pelo síndico
     <br>
     de seu condomínio
@@ -57,17 +57,17 @@
 @if (telaAtual === 'login'){
   <section class="cartao-acesso">
     
-<h2>Área de Login</h2>
+
 <h4>Entrar</h4>
 <div class="campo-login">
-  <label for="identificador">E-mail ou CPF</label>
+  <label for="identificador">CPF</label>
 
   <input
     id="identificador"
     #identificadorInput
     type="text"
     autocomplete="username"
-    placeholder="Digite seu e-mail ou CPF"
+    placeholder="********"
     required>
 </div>
 
@@ -80,7 +80,7 @@
     maxlength="6"
     type="password"
     autocomplete="current-password"
-    placeholder="Digite sua senha"
+    placeholder="******"
     required>
 </div>
 
@@ -93,7 +93,7 @@ Entrar
   <span
     class="dourado"
     (click)="abrirCadastroMorador()">
-    Primeiro acesso: cadastrar-se
+    Ainda não tem conta? Cadastrar-se
 </span>
 }
 

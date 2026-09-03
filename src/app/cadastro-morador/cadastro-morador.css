@@ -9,10 +9,17 @@
   padding-bottom: 60px;
 }
 
-.campo-cadastro {
-  margin-top: 18px;
+.campo-cadastro:has(#nome),
+.campo-cadastro:has(#sobrenome) {
+  display: inline-flex;
+  flex-direction: column;
+  width: calc(50% - 10px);
+  vertical-align: top;
 }
 
+.campo-cadastro:has(#nome) {
+  margin-right: 16px;
+}
 .campo-cadastro label {
   display: block;
   margin-bottom: 6px;
@@ -88,9 +95,7 @@
   opacity: 1;
 }
 
-.label-codigo {
-  color: #D4AF37;
-}
+
 
 .campo-cadastro input.campo-dourado {
   background-color: white;

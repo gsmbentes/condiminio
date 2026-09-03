@@ -1,10 +1,9 @@
 
 <section class="cartao-cadastro-morador">
   <div class="campo-cadastro">
-    <label    for="codigo">Código entregue pelo síndico</label>
+    <label    for="codigo">Código de convite</label>
     <input class="campo-dourado"   id="codigo" #codigoInput type="text" placeholder="Ex.: MOR-001" />
   </div>
-  
   <div class="campo-cadastro">
     <label for="nome">Nome</label>
     <input
@@ -28,17 +27,6 @@
   </div>
 
   <div class="campo-cadastro">
-    <label for="telefone">Telefone</label>
-    <input
-      id="telefone"
-      #telefoneInput
-      type="tel"
-      autocomplete="tel"
-      placeholder="Ex.: (92) 99999-9999"
-    />
-  </div>
-
-  <div class="campo-cadastro">
     <label for="cpf">CPF</label>
     <input
       id="cpf"
@@ -49,10 +37,21 @@
       placeholder="Digite seu CPF"
     />
   </div>
+  <div class="campo-cadastro">
+    <label for="telefone">Telefone</label>
+    <input
+      id="telefone"
+      #telefoneInput
+      type="tel"
+      autocomplete="tel"
+      placeholder="Ex.: (92) 99999-9999"
+    />
+  </div>
+
 
 
   <div class="campo-cadastro">
-    <label for="senha">Crie uma senha</label>
+    <label for="senha">Senha</label>
     <input
       id="senha"
       #senhaInput
@@ -64,7 +63,7 @@
   </div>
 
   <div class="campo-cadastro">
-    <label for="confirmar-senha">Confirme sua senha</label>
+    <label for="confirmar-senha">Confirmar senha</label>
     <input
       id="confirmar-senha"
       #confirmarSenhaInput

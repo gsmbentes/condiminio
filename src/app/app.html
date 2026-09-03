@@ -7,13 +7,13 @@
     <h2>Escolha seu perfil</h2>
 
     <div class="opcoes-perfil">
-      <button class="card-perfil" (click)="escolherPerfil('morador')">
+      <button class="card-perfil" type="button" (click)="escolherPerfil('morador')" [attr.aria-pressed]="perfil_selecionado === 'morador'">
         <img class="icone-perfil" src="/icones/morador.webp" alt="Ícone de morador">
         <strong>Morador</strong>
         <span>Abra e acompanhe os seus chamados.</span>
       </button>
 
-      <button class="card-perfil" (click)="escolherPerfil('sindico')">
+      <button class="card-perfil" type="button" (click)="escolherPerfil('sindico')" [attr.aria-pressed]="perfil_selecionado === 'sindico'">
         <img class="icone-perfil" src="/icones/sindico.webp" alt="Ícone de síndico">
         <strong>Síndico</strong>
         <span>Gerencie, resolva e acompanhe os chamados.</span>
@@ -23,7 +23,7 @@
     @if (perfil_selecionado !== '') {
       <p class="font2">Perfil escolhido: {{ perfil_selecionado }}</p>
 
-      <button class="botao-continuar "(click)="ir_paralogin()">
+      <button class="botao-continuar" type="button" (click)="ir_paralogin()">
         Continuar para login
       </button>
     } @else {
@@ -53,6 +53,7 @@
     id="identificador"
     #identificadorInput
     type="text"
+    autocomplete="username"
     placeholder="Digite seu e-mail ou CPF"
     required>
 </div>
@@ -65,6 +66,7 @@
     #senhaInput
     maxlength="6"
     type="password"
+    autocomplete="current-password"
     placeholder="Digite sua senha"
     required>
 </div>
@@ -109,13 +111,13 @@ Entrar
     <h2>Painel do Síndico</h2>
     <p>Escolha uma função para gerenciar o condomínio.</p>
 
-    <button class="card-perfil" (click)="abrirChamados()">
+    <button class="card-perfil card-painel" type="button" (click)="abrirChamados()">
     <strong>Gerenciar chamados</strong>
     <span>Resolva, exclua e veja o histórico de chamados.</span>
     </button>
 
 
-    <button class="card-perfil" (click)="abrirMoradores()">
+    <button class="card-perfil card-painel" type="button" (click)="abrirMoradores()">
     <strong>Cadastro de moradores</strong>
     <span>Cadastre e consulte os moradores do condomínio.</span>
     </button>

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { CondominioStore } from '../condominio.store';
 
 @Component({
   imports: [],
@@ -7,6 +8,7 @@ import { Component } from '@angular/core';
   templateUrl: './cadastro-morador.html',
 })
 export class CadastroMorador {
+  private readonly store = inject(CondominioStore);
   erroCadastro = '';
   cadastroConcluido = '';
 
@@ -36,8 +38,8 @@ export class CadastroMorador {
     const cpfNumeros = cpf.replace(/\D/g, '');
     const telefoneNumeros = telefone.replace(/\D/g, '');
 
-    if (cpfNumeros.length !== 11) {
-      this.erroCadastro = 'Informe um CPF com 11 números.';
+    if (!this.cpfValido(cpfNumeros)) {
+      this.erroCadastro = 'Informe um CPF válido.';
       this.cadastroConcluido = '';
       return;
     }
@@ -50,6 +52,12 @@ export class CadastroMorador {
 
     if (!/^MOR-\d{3}$/i.test(codigo.trim())) {
       this.erroCadastro = 'Use o código no formato MOR-001.';
+      this.cadastroConcluido = '';
+      return;
+    }
+
+    if (!this.store.codigoExiste(codigo)) {
+      this.erroCadastro = 'Código de acesso inválido ou ainda não liberado pelo síndico.';
       this.cadastroConcluido = '';
       return;
     }
@@ -67,6 +75,21 @@ export class CadastroMorador {
     }
 
     this.erroCadastro = '';
-    this.cadastroConcluido = 'Cadastro concluído com sucesso. Aguarde a liberação do acesso.';
+    this.cadastroConcluido = 'Cadastro concluído com sucesso. Você já pode entrar no sistema.';
+  }
+
+  private cpfValido(cpf: string): boolean {
+    if (!/^\d{11}$/.test(cpf) || /^(\d)\1{10}$/.test(cpf)) return false;
+
+    const calcularDigito = (tamanho: number): number => {
+      const soma = cpf
+        .slice(0, tamanho)
+        .split('')
+        .reduce((total, digito, indice) => total + Number(digito) * (tamanho + 1 - indice), 0);
+      const resto = (soma * 10) % 11;
+      return resto === 10 ? 0 : resto;
+    };
+
+    return calcularDigito(9) === Number(cpf[9]) && calcularDigito(10) === Number(cpf[10]);
   }
 }

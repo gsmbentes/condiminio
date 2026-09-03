@@ -10,9 +10,7 @@ import { CadastroMorador } from './cadastro-morador/cadastro-morador';
   templateUrl: './app.html',
 })
 export class App {
-  protected readonly title = signal('Veritas condominio');
-  mensagem = '';
-  cliques = 0;
+  protected readonly title = signal('Veritas Condomínio');
   telaAtual = 'perfil';
   perfil_selecionado = '';
   erroLogin = '';

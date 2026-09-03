@@ -1,10 +1,5 @@
-import { Component } from '@angular/core';
-type Morador = {
-  nome: string;
-  bloco: string;
-  apartamento: string;
-  codigo: string;
-};
+import { Component, inject } from '@angular/core';
+import { CondominioStore, Morador } from '../condominio.store';
 @Component({
   imports: [],
   selector: 'app-moradores',
@@ -12,11 +7,14 @@ type Morador = {
   templateUrl: './moradores.html',
 })
 export class Moradores {
-  moradores: Morador[] = [];
+  private readonly store = inject(CondominioStore);
+  moradores: Morador[] = this.store.moradores;
   codigoGerado = '';
   erroCadastro = '';
-  proximoCodigo = 1;
+  mensagemSucesso = '';
   mostrarModalConfirmacao = false;
+  mostrarModalExclusao = false;
+  moradorParaExcluir: Morador | null = null;
   nomePendente = '';
   blocoPendente = '';
   apartamentoPendente = '';
@@ -40,6 +38,7 @@ export class Moradores {
     }
 
     this.erroCadastro = '';
+    this.mensagemSucesso = '';
     this.nomePendente = nome.trim();
     this.blocoPendente = bloco.trim();
     this.apartamentoPendente = apartamento.trim();
@@ -53,17 +52,8 @@ export class Moradores {
     }
 
     this.erroCadastro = '';
-    const codigo = 'MOR-' + String(this.proximoCodigo).padStart(3, '0');
-
-    this.moradores.push({
-      nome: nome,
-      bloco: bloco,
-      apartamento: apartamento,
-      codigo: codigo,
-    });
-
-    this.codigoGerado = codigo;
-    this.proximoCodigo++;
+    const morador = this.store.cadastrarMorador(nome.trim(), bloco.trim(), apartamento.trim());
+    this.codigoGerado = morador.codigo;
   }
   cancelarConfirmacao() {
     this.mostrarModalConfirmacao = false;
@@ -87,5 +77,28 @@ export class Moradores {
     nomeInput.value = '';
     blocoInput.value = '';
     apartamentoInput.value = '';
+  }
+
+  pedirExclusao(morador: Morador) {
+    this.moradorParaExcluir = morador;
+    this.mostrarModalExclusao = true;
+  }
+
+  cancelarExclusao() {
+    this.mostrarModalExclusao = false;
+    this.moradorParaExcluir = null;
+  }
+
+  confirmarExclusao() {
+    if (this.moradorParaExcluir === null) return;
+
+    const nome = this.moradorParaExcluir.nome;
+    if (this.store.removerMorador(this.moradorParaExcluir)) {
+      this.codigoGerado = '';
+      this.erroCadastro = '';
+      this.mensagemSucesso = `${nome} foi excluído do cadastro.`;
+    }
+
+    this.cancelarExclusao();
   }
 }

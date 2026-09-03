@@ -51,7 +51,7 @@
     <div class="lista-conversas">
       @for (
         chamado of perfil === 'morador' ? chamadosDoMorador() : chamados;
-        track chamado.descricao
+        track chamado.id
       ) {
         <article
           class="cartao-chamado"
@@ -117,9 +117,11 @@
             </button>
           }
 
-          <button class="botao-perigo" (click)="pedirConfirmacao('excluir', chamadoSelecionado)">
-            Excluir chamado
-          </button>
+          @if (podeAlterar(chamadoSelecionado)) {
+            <button class="botao-perigo" (click)="pedirConfirmacao('excluir', chamadoSelecionado)">
+              Excluir chamado
+            </button>
+          }
         </div>
       </section>
     } @else {
@@ -136,7 +138,7 @@
   @if (historicoDoSindico().length === 0) {
     <p>Nenhum chamado foi excluído pelo síndico.</p>
   } @else {
-    @for (chamado of historicoDoSindico(); track chamado.descricao) {
+    @for (chamado of historicoDoSindico(); track chamado.id) {
       <p>Descrição: {{ chamado.descricao }}</p>
       <p>Gravidade: {{ chamado.gravidade }}</p>
       <p>Status quando foi excluído: {{ chamado.status }}</p>

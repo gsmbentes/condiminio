@@ -1,12 +1,5 @@
-import { Component, Input } from '@angular/core';
-type Chamado = {
-  descricao: string;
-  gravidade: number;
-  status: string;
-  criadoPor: string;
-  excluidoPor?: string;
-  perfilCriador: string;
-};
+import { Component, inject, Input } from '@angular/core';
+import { Chamado, CondominioStore } from '../condominio.store';
 
 @Component({
   imports: [],
@@ -15,6 +8,7 @@ type Chamado = {
   templateUrl: './chamados.html',
 })
 export class Chamados {
+  private readonly store = inject(CondominioStore);
   mensagemSucesso = '';
   mensagemErro = '';
   @Input() perfil = '';
@@ -24,34 +18,13 @@ export class Chamados {
   chamadoParaConfirmar: Chamado | null = null;
   chamadoSelecionado: Chamado | null = null;
   telaChamados = 'lista';
-  chamadosExcluidos: Chamado[] = [];
-
-  chamados: Chamado[] = [
-    {
-      descricao: 'Lâmpada quebrada',
-      gravidade: 4,
-      status: 'aberto',
-      criadoPor: 'sindico@veritas.com',
-      perfilCriador: 'sindico',
-    },
-    {
-      descricao: 'Vazamento de água',
-      gravidade: 9,
-      status: 'aberto',
-      criadoPor: 'sindico@veritas.com',
-      perfilCriador: 'sindico',
-    },
-    {
-      descricao: 'Portão quebrado',
-      gravidade: 8,
-      status: 'resolvido',
-      criadoPor: 'sindico@veritas.com',
-      perfilCriador: 'sindico',
-    },
-  ];
+  chamados = this.store.chamados;
+  chamadosExcluidos = this.store.chamadosExcluidos;
 
   resolver(chamado: Chamado) {
+    if (this.perfil !== 'sindico' || chamado.status !== 'aberto') return;
     chamado.status = 'resolvido';
+    this.mensagemSucesso = 'Chamado marcado como resolvido.';
   }
 
   quantidadeAbertos() {
@@ -61,7 +34,7 @@ export class Chamados {
     const descricao = descricaoInput.value;
     const gravidade = Number(gravidadeInput.value);
 
-    if (descricao.trim() === '' || gravidade < 1 || gravidade > 10) {
+    if (descricao.trim() === '' || !Number.isInteger(gravidade) || gravidade < 1 || gravidade > 10) {
       this.mensagemSucesso = '';
       this.mensagemErro = 'Informe uma descrição e uma gravidade entre 1 e 10.';
       return;
@@ -69,13 +42,7 @@ export class Chamados {
     this.mensagemSucesso = 'Chamado criado com sucesso.';
     this.mensagemErro = '';
 
-    this.chamados.push({
-      descricao: descricao,
-      gravidade: gravidade,
-      status: 'aberto',
-      criadoPor: this.usuarioLogado,
-      perfilCriador: this.perfil,
-    });
+    this.store.criarChamado(descricao.trim(), gravidade, this.usuarioLogado, this.perfil);
 
     descricaoInput.value = '';
     this.ajustarAlturaDescricao(descricaoInput);
@@ -92,6 +59,7 @@ export class Chamados {
   }
 
   removerChamado(chamado: Chamado) {
+    if (!this.podeAlterar(chamado)) return;
     const indice = this.chamados.indexOf(chamado);
 
     if (indice === -1) {
@@ -134,9 +102,11 @@ export class Chamados {
   }
   recuperarChamado(chamado: Chamado) {
     const indice = this.chamadosExcluidos.indexOf(chamado);
+    if (indice === -1 || this.perfil !== 'sindico') return;
     const chamadoRecuperado = this.chamadosExcluidos.splice(indice, 1)[0];
 
     if (chamadoRecuperado) {
+      delete chamadoRecuperado.excluidoPor;
       this.chamados.push(chamadoRecuperado);
     }
   }
@@ -151,6 +121,7 @@ export class Chamados {
     return this.chamadosExcluidos.filter((chamado) => chamado.excluidoPor === 'sindico');
   }
   pedirConfirmacao(acao: string, chamado: Chamado) {
+    if (!this.podeAlterar(chamado) || (acao === 'resolver' && this.perfil !== 'sindico')) return;
     this.acaoPendente = acao;
     this.chamadoParaConfirmar = chamado;
     this.modalAberto = true;
@@ -160,5 +131,9 @@ export class Chamados {
     this.modalAberto = false;
     this.acaoPendente = '';
     this.chamadoParaConfirmar = null;
+  }
+
+  podeAlterar(chamado: Chamado): boolean {
+    return this.perfil === 'sindico' || chamado.criadoPor === this.usuarioLogado;
   }
 }

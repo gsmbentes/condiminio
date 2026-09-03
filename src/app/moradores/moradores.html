@@ -47,6 +47,10 @@
     <p>Código de acesso: {{ codigoGerado }}</p>
   </section>
 }
+
+@if (mensagemSucesso !== '') {
+  <p class="mensagem-sucesso" role="status">{{ mensagemSucesso }}</p>
+}
 <hr>
 
 <h3>Moradores cadastrados</h3>
@@ -60,8 +64,31 @@
       <p><strong>Bloco:</strong> {{ morador.bloco }}</p>
       <p><strong>Apartamento:</strong> {{ morador.apartamento }}</p>
       <p><strong>Código:</strong> {{ morador.codigo }}</p>
+      <button class="botao-excluir" type="button" (click)="pedirExclusao(morador)">
+        Excluir morador
+      </button>
     </article>
   }
+}
+
+@if (mostrarModalExclusao && moradorParaExcluir !== null) {
+  <div class="fundo-modal" role="presentation">
+    <section class="modal-confirmacao" role="dialog" aria-modal="true" aria-labelledby="titulo-exclusao">
+      <h3 id="titulo-exclusao">Excluir morador?</h3>
+      <p>
+        Deseja excluir {{ moradorParaExcluir.nome }} do cadastro? Esta ação não poderá ser desfeita.
+      </p>
+
+      <div class="botoes-modal">
+        <button class="botao-cancelar" type="button" (click)="cancelarExclusao()">
+          Cancelar
+        </button>
+        <button class="botao-confirmar" type="button" (click)="confirmarExclusao()">
+          Confirmar exclusão
+        </button>
+      </div>
+    </section>
+  </div>
 }
 </section>
 @if (mostrarModalConfirmacao) {

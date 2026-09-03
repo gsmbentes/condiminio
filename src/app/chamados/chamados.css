@@ -4,8 +4,9 @@
   margin: 32px auto;
   padding: 32px;
   background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(31, 41, 55, 0.12);
+  border: 1px solid #e4e0d8;
+  border-radius: 14px;
+  box-shadow: 0 10px 28px rgba(46, 42, 35, 0.07);
 }
 input,
 textarea {
@@ -32,14 +33,14 @@ button {
   padding: 10px 16px;
   border: none;
   border-radius: 8px;
-  background-color: #2563eb;
+  background-color: #292929;
   color: white;
   font-size: 15px;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: #1d4ed8;
+  background-color: #4a4741;
 }
 button.botao-perigo {
   background-color: #dc2626;
@@ -69,7 +70,7 @@ button.botao-secundario:hover {
   padding: 20px;
   border: 1px solid #e2e8f0;
   border-radius: 10px;
-  background-color: #f8fafc;
+  background-color: #fbfaf8;
 }
 
 .cartao-chamado h3 {
@@ -145,9 +146,9 @@ button.botao-secundario:hover {
 }
 
 .chamado-selecionado {
-  border-color: #2563eb;
-  background-color: #eff6ff;
-  box-shadow: 0 0 0 2px #dbeafe;
+  border-color: #292929;
+  background-color: #f3f0ea;
+  box-shadow: 0 0 0 2px #e6e2da;
 }
 
 .conversa-chamado {

@@ -30,23 +30,41 @@ export class Chamados {
   quantidadeAbertos() {
     return this.chamados.filter((chamado) => chamado.status === 'aberto').length;
   }
-  adicionarChamado(descricaoInput: HTMLTextAreaElement, gravidadeInput: HTMLInputElement) {
-    const descricao = descricaoInput.value;
-    const gravidade = Number(gravidadeInput.value);
+  adicionarChamado(
+  descricaoInput: HTMLTextAreaElement,
+  gravidadeInput: HTMLInputElement
+  ) {
+  const descricao = descricaoInput.value;
+  const gravidade = Number(gravidadeInput.value);
 
-    if (descricao.trim() === '' || !Number.isInteger(gravidade) || gravidade < 1 || gravidade > 10) {
-      this.mensagemSucesso = '';
-      this.mensagemErro = 'Informe uma descrição e uma gravidade entre 1 e 10.';
-      return;
-    }
-    this.mensagemSucesso = 'Chamado criado com sucesso.';
-    this.mensagemErro = '';
+  if (
+    descricao.trim() === '' ||
+    !Number.isInteger(gravidade) ||
+    gravidade < 1 ||
+    gravidade > 10
+  ) {
+    this.mensagemSucesso = '';
+    this.mensagemErro =
+      'Informe uma descrição e uma gravidade entre 1 e 10.';
+    return;
+  }
 
-    this.store.criarChamado(descricao.trim(), gravidade, this.usuarioLogado, this.perfil);
+  this.mensagemSucesso = 'Chamado criado com sucesso.';
+  this.mensagemErro = '';
 
-    descricaoInput.value = '';
-    this.ajustarAlturaDescricao(descricaoInput);
-    gravidadeInput.value = '';
+  this.store.criarChamado(
+    descricao.trim(),
+    gravidade,
+    this.usuarioLogado,
+    this.perfil
+  );
+
+  descricaoInput.value = '';
+  this.ajustarAlturaDescricao(descricaoInput);
+  gravidadeInput.value = '';
+  }
+  ordenarPorUrgencia(chamados: Chamado[]): Chamado[] {
+  return [...chamados].sort((a, b) => b.gravidade - a.gravidade);
   }
 
   ajustarAlturaDescricao(descricaoInput: HTMLTextAreaElement) {

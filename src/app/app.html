@@ -1,6 +1,28 @@
-<h1 class="font">{{ title() }}</h1>
+@if (telaAtual === 'login' && perfil_selecionado === 'morador') {
 
-<p class="font">Sistema de gerenciamento de Condomínio</p>
+  <h1 class="font">Veritas</h1>
+  <p class="font">Gestão do seu condomínio, num só lugar.</p>
+
+} @else if (telaAtual === 'cadastroMorador') {
+
+  <h1 class="font">Criar conta</h1>
+  <p class="font">
+    Utilize o código de convite enviado pelo síndico
+    <br>
+    de seu condomínio
+  </p>
+
+} @else if (telaAtual === 'sistema' && perfil_selecionado === 'morador') {
+
+  <h1 class="font">Meus chamados</h1>
+  <p class="font">Gestão dos seus chamados.</p>
+
+} @else {
+
+  <h1 class="font">{{ title() }}</h1>
+  <p class="font">Sistema de gerenciamento de Condomínio</p>
+
+}
 
 @if (telaAtual === 'perfil') {
   <section class="cartao-acesso">
@@ -135,9 +157,7 @@ Entrar
   <app-moradores></app-moradores>
 } 
 @if (telaAtual === 'cadastroMorador') {
-  <button class="botao-voltar" (click)="voltarParaLogin()">
-    Voltar ao login
-  </button>
+  
 
   <app-cadastro-morador
   (voltarLogin)="voltarParaLogin()">

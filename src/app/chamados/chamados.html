@@ -1,4 +1,4 @@
-<h2>Chamados do condomínio</h2>
+
 <p>Você entrou como: {{ perfil }}</p>
 
 @if (telaChamados === 'lista') {
@@ -49,10 +49,9 @@
 
   <div class="painel-chamados">
     <div class="lista-conversas">
-      @for (
-        chamado of perfil === 'morador' ? chamadosDoMorador() : chamados;
-        track chamado.id
-      ) {
+      @for (chamado of ordenarPorUrgencia(perfil === 'morador' ? chamadosDoMorador() : chamados);
+          track chamado.id
+          ) {
         <article
           class="cartao-chamado"
           [class.chamado-selecionado]="chamadoSelecionado === chamado"

@@ -1,7 +1,13 @@
+
 <section class="cartao-cadastro-morador">
   <h2>Primeiro acesso do morador</h2>
   <p>Preencha seus dados e informe o código entregue pelo síndico.</p>
-
+  
+  <div class="campo-cadastro">
+    <label  class="label-codigo "  for="codigo">Código entregue pelo síndico</label>
+    <input class="campo-dourado"   id="codigo" #codigoInput type="text" placeholder="Ex.: MOR-001" />
+  </div>
+  
   <div class="campo-cadastro">
     <label for="nome">Nome</label>
     <input
@@ -47,10 +53,6 @@
     />
   </div>
 
-  <div class="campo-cadastro">
-    <label for="codigo">Código entregue pelo síndico</label>
-    <input id="codigo" #codigoInput type="text" placeholder="Ex.: MOR-001" />
-  </div>
 
   <div class="campo-cadastro">
     <label for="senha">Crie uma senha</label>
@@ -99,4 +101,12 @@
   @if (cadastroConcluido !== '') {
     <p class="mensagem-sucesso">{{ cadastroConcluido }}</p>
   }
+
+  <div>
+    <span
+    class="dourado"
+    (click)="voltarParaLogin()">
+    Já tem login?/login
+    </span>
+  </div>
 </section>

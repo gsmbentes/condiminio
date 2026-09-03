@@ -77,11 +77,11 @@ class="botao-entrar"
 Entrar
 </button>
 @if (perfil_selecionado === 'morador') {
-  <button
-    class="botao-voltar"
+  <span
+    class="dourado"
     (click)="abrirCadastroMorador()">
     Primeiro acesso: cadastrar-se
-  </button>
+</span>
 }
 
 @if (erroLogin !== '') {
@@ -139,5 +139,7 @@ Entrar
     Voltar ao login
   </button>
 
-  <app-cadastro-morador></app-cadastro-morador>
+  <app-cadastro-morador
+  (voltarLogin)="voltarParaLogin()">
+</app-cadastro-morador>
 }

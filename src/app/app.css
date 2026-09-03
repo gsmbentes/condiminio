@@ -196,3 +196,13 @@ p.font {
     padding: 22px;
   }
 }
+
+.dourado {
+  color: #D4AF37;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.dourado2 {
+  color: #D4AF37;
+}

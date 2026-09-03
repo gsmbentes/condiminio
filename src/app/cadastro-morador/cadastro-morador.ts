@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { CondominioStore } from '../condominio.store';
 
 @Component({
@@ -9,8 +9,10 @@ import { CondominioStore } from '../condominio.store';
 })
 export class CadastroMorador {
   private readonly store = inject(CondominioStore);
+  @Output() voltarLogin = new EventEmitter<void>();
   erroCadastro = '';
   cadastroConcluido = '';
+  telaAtual = 'perfil';
 
   finalizarCadastro(
     nome: string,
@@ -92,4 +94,8 @@ export class CadastroMorador {
 
     return calcularDigito(9) === Number(cpf[9]) && calcularDigito(10) === Number(cpf[10]);
   }
+
+  voltarParaLogin() {
+  this.voltarLogin.emit();
+}
 }

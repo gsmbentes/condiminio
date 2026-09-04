@@ -86,10 +86,6 @@
 }
 
 @if (telaChamados === 'novo') {
-  
-      <div class="navegacao-novo">
-        <button class="botao-secundario" (click)="cancelarNovoChamado()">Voltar</button>
-      </div>
   <section class="formulario-chamado">
     <section class="identificacao-morador" aria-label="Dados do morador">
       <mat-icon>apartment</mat-icon>
@@ -98,6 +94,10 @@
         <strong>{{ usuarioLogado || 'Morador' }}</strong>
       </div>
     </section>
+    
+        <div class="navegacao-novo">
+          <button class="botao-secundario" (click)="cancelarNovoChamado()">Voltar</button>
+        </div>
 
     <label for="titulo-chamado">Título do chamado</label>
     <input id="titulo-chamado" #tituloInput maxlength="30" placeholder="Ex.: Portão da garagem não fecha" />

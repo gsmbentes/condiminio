@@ -857,7 +857,7 @@ button.botao-secundario:hover {
 
 .botao-flutuante {
   right: 32px;
-  bottom: 32px;
+  bottom: 96px;
   font-size: 32px;
   line-height: 1;
 }
@@ -969,7 +969,7 @@ button.botao-secundario:hover {
 
   .botao-flutuante {
     right: 20px;
-    bottom: 20px;
+    bottom: 92px;
   }
 
   .cabecalho-novo,

@@ -17,6 +17,16 @@
   <h1 class="font">{{ telaChamadosAtual === 'novo' ? 'Novo chamado' : 'Meus chamados' }}</h1>
   <p class="font">{{ telaChamadosAtual === 'novo' ? 'Residencial Jardim das Acácias' : 'Gestão dos seus chamados.' }}</p>
 
+} @else if (telaAtual === 'inicio') {
+
+  <h1 class="font">Veritas</h1>
+  <p class="font">Gestão do seu condomínio, num só lugar.</p>
+
+} @else if (telaAtual === 'perfilUsuario') {
+
+  <h1 class="font">Perfil</h1>
+  <p class="font">Sua área no Veritas.</p>
+
 } @else {
 
   <h1 class="font">{{ title() }}</h1>
@@ -120,6 +130,21 @@ Entrar
     (telaMudou)="atualizarTelaChamados($event)">
   </app-chamados>
 }
+@if (telaAtual === 'inicio') {
+  <section class="inicio-landing">
+    <p class="inicio-etiqueta">{{ perfil_selecionado === 'sindico' ? 'PAINEL DO SÍNDICO' : 'ÁREA DO MORADOR' }}</p>
+    <h2>Bem-vindo ao sistema Veritas</h2>
+    <p>Olá, {{ usuarioLogado }}. Acompanhe as informações do seu condomínio em um só lugar.</p>
+
+    <div class="inicio-destaque">
+      <mat-icon>home_work</mat-icon>
+      <div>
+        <strong>Residencial Jardim das Acácias</strong>
+        <span>Use o menu abaixo para acessar suas funções.</span>
+      </div>
+    </div>
+  </section>
+}
 @if (telaAtual === 'painelSindico') {
   <section class="cartao-acesso">
     <h2>Painel do Síndico</h2>
@@ -141,6 +166,18 @@ Entrar
     </button>
   </section>
 }
+@if (telaAtual === 'perfilUsuario') {
+  <section class="pagina-perfil-vazia">
+    <div class="avatar-perfil" aria-hidden="true">
+      <mat-icon>person</mat-icon>
+    </div>
+    <h2>Perfil do morador</h2>
+    <p>{{ usuarioLogado }}</p>
+    <button class="botao-escolher-perfil" type="button" (click)="sair()">
+      Voltar para escolha de perfil
+    </button>
+  </section>
+}
 @if (telaAtual === 'moradores') {
   <button class="botao-voltar" (click)="voltarParaPainelSindico()">
     Voltar ao painel do síndico
@@ -154,4 +191,28 @@ Entrar
   <app-cadastro-morador
   (voltarLogin)="voltarParaLogin()">
 </app-cadastro-morador>
+}
+
+@if (
+  usuarioLogado !== '' &&
+  telaAtual !== 'perfil' &&
+  telaAtual !== 'login' &&
+  telaAtual !== 'cadastroMorador'
+) {
+  <nav class="barra-navegacao" aria-label="Navegação principal">
+    <button type="button" [class.ativo]="telaAtual === 'inicio'" (click)="abrirInicio()">
+      <mat-icon>home</mat-icon>
+      <span>Início</span>
+    </button>
+
+    <button type="button" [class.ativo]="telaAtual === 'sistema' || telaAtual === 'painelSindico'" (click)="abrirChamados()">
+      <mat-icon>assignment</mat-icon>
+      <span>Chamados</span>
+    </button>
+
+    <button type="button" [class.ativo]="telaAtual === 'perfilUsuario'" (click)="abrirPerfilUsuario()">
+      <mat-icon>person</mat-icon>
+      <span>Perfil</span>
+    </button>
+  </nav>
 }

@@ -2,9 +2,10 @@ import { Component, signal } from '@angular/core';
 import { Chamados } from './chamados/chamados';
 import { Moradores } from './moradores/moradores';
 import { CadastroMorador } from './cadastro-morador/cadastro-morador';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  imports: [Chamados, Moradores, CadastroMorador],
+  imports: [Chamados, Moradores, CadastroMorador, MatIconModule],
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',
@@ -30,11 +31,7 @@ export class App {
       this.erroLogin = '';
       this.usuarioLogado = identificador.trim();
 
-      if (this.perfil_selecionado === 'sindico') {
-        this.telaAtual = 'painelSindico';
-      } else {
-        this.telaAtual = 'sistema';
-      }
+      this.telaAtual = 'inicio';
     }
   }
   voltarParaPerfil() {
@@ -51,7 +48,7 @@ export class App {
   }
 
   abrirChamados() {
-    this.telaAtual = 'sistema';
+    this.telaAtual = this.perfil_selecionado === 'sindico' ? 'painelSindico' : 'sistema';
   }
 
   abrirMoradores() {
@@ -62,6 +59,14 @@ export class App {
   }
   abrirCadastroMorador() {
     this.telaAtual = 'cadastroMorador';
+  }
+
+  abrirInicio() {
+    this.telaAtual = 'inicio';
+  }
+
+  abrirPerfilUsuario() {
+    this.telaAtual = 'perfilUsuario';
   }
   voltarParaLogin() {
     this.telaAtual = 'login';

@@ -903,6 +903,65 @@ button.botao-secundario:hover {
   font-size: 12px;
 }
 
+/* Campo visual de foto; o input real fica oculto e o rótulo abre o seletor. */
+.input-foto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+.anexar-foto {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+  padding: 14px 16px;
+  border: 1px dashed #d9cfbf;
+  border-radius: 10px;
+  background: #fffdfa;
+  color: #2e3235;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.anexar-foto:hover {
+  border-color: #bd8538;
+  background: #fdf7ed;
+}
+
+.icone-foto {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border-radius: 50%;
+  background: #f1eee8;
+  color: #805b27;
+}
+
+.icone-foto mat-icon {
+  font-size: 20px;
+}
+
+.anexar-foto strong,
+.anexar-foto small {
+  display: block;
+}
+
+.anexar-foto strong {
+  font-size: 13px;
+}
+
+.anexar-foto small {
+  margin-top: 3px;
+  color: #8a8175;
+  font-size: 12px;
+}
+
 @media (max-width: 600px) {
   :host {
     padding: 20px 20px 88px;

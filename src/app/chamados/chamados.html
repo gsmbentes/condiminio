@@ -137,6 +137,22 @@
     <label for="descricao-chamado">Descreva o que está acontecendo</label>
     <textarea id="descricao-chamado" #descricaoInput rows="4" placeholder="Ex.: o portão da garagem está com dificuldade para fechar desde ontem à noite." (input)="ajustarAlturaDescricao(descricaoInput)"></textarea>
 
+    <input
+      #fotoInput
+      class="input-foto"
+      id="foto-chamado"
+      type="file"
+      accept="image/png, image/jpeg, image/webp"
+      (change)="selecionarFoto(fotoInput)"
+    />
+    <label class="anexar-foto" for="foto-chamado">
+      <span class="icone-foto"><mat-icon>photo_camera</mat-icon></span>
+      <span>
+        <strong>{{ fotoSelecionada === '' ? 'Anexar foto' : fotoSelecionada }}</strong>
+        <small>{{ fotoSelecionada === '' ? 'Ajuda o síndico a entender o problema' : 'Foto selecionada. Clique para trocar.' }}</small>
+      </span>
+    </label>
+
     @if (mensagemErro !== '') {
       <p class="mensagem-erro">{{ mensagemErro }}</p>
     }

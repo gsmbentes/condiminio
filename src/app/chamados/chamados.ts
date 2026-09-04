@@ -25,6 +25,7 @@ export class Chamados {
   telaChamados = 'lista';
   categoriaSelecionada = 'Manutenção';
   prioridadeSelecionada = 5;
+  fotoSelecionada = '';
   readonly categorias = ['Manutenção', 'Barulho', 'Segurança', 'Limpeza', 'Portaria', 'Outro'];
   chamados = this.store.chamados;
   chamadosExcluidos = this.store.chamadosExcluidos;
@@ -73,6 +74,7 @@ export class Chamados {
 
   tituloInput.value = '';
   descricaoInput.value = '';
+  this.fotoSelecionada = '';
   this.ajustarAlturaDescricao(descricaoInput);
   this.telaChamados = 'lista';
   this.telaMudou.emit('lista');
@@ -88,6 +90,7 @@ export class Chamados {
 
   cancelarNovoChamado() {
     this.mensagemErro = '';
+    this.fotoSelecionada = '';
     this.telaChamados = 'lista';
     this.telaMudou.emit('lista');
   }
@@ -98,6 +101,11 @@ export class Chamados {
 
   selecionarPrioridade(prioridade: number) {
     this.prioridadeSelecionada = prioridade;
+  }
+
+  selecionarFoto(input: HTMLInputElement) {
+    const arquivo = input.files?.[0];
+    this.fotoSelecionada = arquivo?.name ?? '';
   }
   ordenarPorUrgencia(chamados: Chamado[]): Chamado[] {
   return [...chamados].sort((a, b) => b.gravidade - a.gravidade);

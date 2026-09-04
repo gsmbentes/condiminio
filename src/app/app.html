@@ -55,8 +55,8 @@
 }
 
 @if (telaAtual === 'login'){
-  <section class="cartao-acesso">
-    
+  <section class="login-container">
+<button class="botao-voltar"  type="button" (click)="voltarParaPerfil() ">voltar para perfil</button>
 
 <h4>Entrar</h4>
 <div class="campo-login">
@@ -67,7 +67,7 @@
     #identificadorInput
     type="text"
     autocomplete="username"
-    placeholder="********"
+    placeholder="000.000.000-00"
     required>
 </div>
 

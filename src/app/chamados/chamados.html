@@ -18,7 +18,13 @@
 
     <input #gravidadeInput type="number" min="1" max="10" placeholder="Gravidade (1 a 10)" />
 
-    <button (click)="adicionarChamado(descricaoInput, gravidadeInput)">Adicionar chamado</button>
+    <button
+    matFab
+    class="botao-flutuante"
+    aria-label="Adicionar chamado"
+    (click)="adicionarChamado(descricaoInput, gravidadeInput)">
+    <mat-icon>+</mat-icon>
+    </button>
 
     @if (mensagemErro !== '') {
       <p class="mensagem-erro">{{ mensagemErro }}</p>

@@ -522,8 +522,8 @@ button.botao-secundario:hover {
 
   .cabecalho-chamados .botao-secundario,
   .botao-criar {
-    width: 100%;
-    margin: 0;
+    width: 50%;
+    margin-right: 50px;
   }
 
   .linha-chamado {
@@ -892,11 +892,15 @@ button.botao-secundario:hover {
 .navegacao-novo {
   display: flex;
   justify-content: flex-end;
-  padding: 20px 32px 0;
+  padding: 10px 0 0;
 }
 
 .navegacao-novo .botao-secundario {
+  width: auto;
   margin: 0;
+  padding: 7px 12px;
+  border-radius: 7px;
+  font-size: 12px;
 }
 
 @media (max-width: 600px) {
@@ -916,6 +920,6 @@ button.botao-secundario:hover {
   }
 
   .navegacao-novo {
-    padding: 16px 20px 0;
+    padding: 10px 0 0;
   }
 }

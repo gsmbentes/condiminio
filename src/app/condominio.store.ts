@@ -9,7 +9,9 @@ export type Morador = {
 
 export type Chamado = {
   id: number;
+  titulo: string;
   descricao: string;
+  categoria: string;
   gravidade: number;
   status: 'aberto' | 'resolvido';
   criadoPor: string;
@@ -21,9 +23,9 @@ export type Chamado = {
 export class CondominioStore {
   readonly moradores: Morador[] = [];
   readonly chamados: Chamado[] = [
-    { id: 1, descricao: 'Lâmpada quebrada', gravidade: 4, status: 'aberto', criadoPor: 'sindico@veritas.com', perfilCriador: 'sindico' },
-    { id: 2, descricao: 'Vazamento de água', gravidade: 9, status: 'aberto', criadoPor: 'sindico@veritas.com', perfilCriador: 'sindico' },
-    { id: 3, descricao: 'Portão quebrado', gravidade: 8, status: 'resolvido', criadoPor: 'sindico@veritas.com', perfilCriador: 'sindico' },
+    { id: 1, titulo: 'Lâmpada quebrada no corredor', descricao: 'A lâmpada do corredor está queimada.', categoria: 'Manutenção', gravidade: 4, status: 'aberto', criadoPor: 'sindico@veritas.com', perfilCriador: 'sindico' },
+    { id: 2, titulo: 'Vazamento de água', descricao: 'Há um vazamento de água próximo à garagem.', categoria: 'Manutenção', gravidade: 9, status: 'aberto', criadoPor: 'sindico@veritas.com', perfilCriador: 'sindico' },
+    { id: 3, titulo: 'Portão da garagem', descricao: 'O portão precisou de manutenção.', categoria: 'Segurança', gravidade: 8, status: 'resolvido', criadoPor: 'sindico@veritas.com', perfilCriador: 'sindico' },
   ];
   readonly chamadosExcluidos: Chamado[] = [];
   private proximoCodigo = 1;
@@ -58,7 +60,7 @@ export class CondominioStore {
     return true;
   }
 
-  criarChamado(descricao: string, gravidade: number, criadoPor: string, perfilCriador: string): void {
-    this.chamados.push({ id: this.proximoChamadoId++, descricao, gravidade, status: 'aberto', criadoPor, perfilCriador });
+  criarChamado(titulo: string, descricao: string, categoria: string, gravidade: number, criadoPor: string, perfilCriador: string): void {
+    this.chamados.push({ id: this.proximoChamadoId++, titulo, descricao, categoria, gravidade, status: 'aberto', criadoPor, perfilCriador });
   }
 }

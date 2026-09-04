@@ -14,8 +14,8 @@
 
 } @else if (telaAtual === 'sistema' && perfil_selecionado === 'morador') {
 
-  <h1 class="font">Meus chamados</h1>
-  <p class="font">Gestão dos seus chamados.</p>
+  <h1 class="font">{{ telaChamadosAtual === 'novo' ? 'Novo chamado' : 'Meus chamados' }}</h1>
+  <p class="font">{{ telaChamadosAtual === 'novo' ? 'Residencial Jardim das Acácias' : 'Gestão dos seus chamados.' }}</p>
 
 } @else {
 
@@ -108,7 +108,7 @@ Entrar
       Voltar ao painel do síndico
     </button>
   }
-  @if (perfil_selecionado === 'morador') {
+  @if (perfil_selecionado === 'morador' && telaChamadosAtual !== 'novo') {
     <button class="botao-voltar" (click)="sair()">
     Sair do app
   </button>
@@ -116,7 +116,8 @@ Entrar
 
   <app-chamados
     [perfil]="perfil_selecionado"
-    [usuarioLogado]="usuarioLogado">
+    [usuarioLogado]="usuarioLogado"
+    (telaMudou)="atualizarTelaChamados($event)">
   </app-chamados>
 }
 @if (telaAtual === 'painelSindico') {

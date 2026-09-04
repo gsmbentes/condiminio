@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Chamado, CondominioStore } from '../condominio.store';
@@ -17,11 +17,15 @@ export class Chamados {
   mensagemErro = '';
   @Input() perfil = '';
   @Input() usuarioLogado = '';
+  @Output() telaMudou = new EventEmitter<string>();
   modalAberto = false;
   acaoPendente = '';
   chamadoParaConfirmar: Chamado | null = null;
   chamadoSelecionado: Chamado | null = null;
   telaChamados = 'lista';
+  categoriaSelecionada = 'Manutenção';
+  prioridadeSelecionada = 5;
+  readonly categorias = ['Manutenção', 'Barulho', 'Segurança', 'Limpeza', 'Portaria', 'Outro'];
   chamados = this.store.chamados;
   chamadosExcluidos = this.store.chamadosExcluidos;
 
@@ -35,21 +39,23 @@ export class Chamados {
     return this.chamados.filter((chamado) => chamado.status === 'aberto').length;
   }
   adicionarChamado(
+  tituloInput: HTMLInputElement,
   descricaoInput: HTMLTextAreaElement,
-  gravidadeInput: HTMLInputElement
   ) {
+  const titulo = tituloInput.value;
   const descricao = descricaoInput.value;
-  const gravidade = Number(gravidadeInput.value);
+  const gravidade = this.prioridadeSelecionada;
 
   if (
+    titulo.trim() === '' ||
+    titulo.trim().length > 30 ||
     descricao.trim() === '' ||
-    !Number.isInteger(gravidade) ||
     gravidade < 1 ||
     gravidade > 10
   ) {
     this.mensagemSucesso = '';
     this.mensagemErro =
-      'Informe uma descrição e uma gravidade entre 1 e 10.';
+      'Informe um título de até 30 caracteres e descreva o problema.';
     return;
   }
 
@@ -57,15 +63,41 @@ export class Chamados {
   this.mensagemErro = '';
 
   this.store.criarChamado(
+    titulo.trim(),
     descricao.trim(),
+    this.categoriaSelecionada,
     gravidade,
     this.usuarioLogado,
     this.perfil
   );
 
+  tituloInput.value = '';
   descricaoInput.value = '';
   this.ajustarAlturaDescricao(descricaoInput);
-  gravidadeInput.value = '';
+  this.telaChamados = 'lista';
+  this.telaMudou.emit('lista');
+  }
+
+  abrirNovoChamado() {
+    if (this.perfil !== 'morador') return;
+    this.mensagemErro = '';
+    this.mensagemSucesso = '';
+    this.telaChamados = 'novo';
+    this.telaMudou.emit('novo');
+  }
+
+  cancelarNovoChamado() {
+    this.mensagemErro = '';
+    this.telaChamados = 'lista';
+    this.telaMudou.emit('lista');
+  }
+
+  selecionarCategoria(categoria: string) {
+    this.categoriaSelecionada = categoria;
+  }
+
+  selecionarPrioridade(prioridade: number) {
+    this.prioridadeSelecionada = prioridade;
   }
   ordenarPorUrgencia(chamados: Chamado[]): Chamado[] {
   return [...chamados].sort((a, b) => b.gravidade - a.gravidade);

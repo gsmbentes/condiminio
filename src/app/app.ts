@@ -15,6 +15,7 @@ export class App {
   perfil_selecionado = '';
   erroLogin = '';
   usuarioLogado = '';
+  telaChamadosAtual = 'lista';
 
   escolherPerfil(perfil: string) {
     this.perfil_selecionado = perfil;
@@ -64,5 +65,9 @@ export class App {
   }
   voltarParaLogin() {
     this.telaAtual = 'login';
+  }
+
+  atualizarTelaChamados(tela: string) {
+    this.telaChamadosAtual = tela;
   }
 }

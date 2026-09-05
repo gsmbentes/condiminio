@@ -24,8 +24,9 @@ export class Chamados {
   chamadoSelecionado: Chamado | null = null;
   telaChamados = 'lista';
   categoriaSelecionada = 'Manutenção';
-  prioridadeSelecionada = 5;
   fotoSelecionada = '';
+  filtroSindico = 'todos';
+  statusSelecionadoSindico: Chamado['status'] = 'aberto';
   readonly categorias = ['Manutenção', 'Barulho', 'Segurança', 'Limpeza', 'Portaria', 'Outro'];
   chamados = this.store.chamados;
   chamadosExcluidos = this.store.chamadosExcluidos;
@@ -36,16 +37,13 @@ export class Chamados {
     this.mensagemSucesso = 'Chamado marcado como resolvido.';
   }
 
-  quantidadeAbertos() {
-    return this.chamados.filter((chamado) => chamado.status === 'aberto').length;
-  }
   adicionarChamado(
   tituloInput: HTMLInputElement,
   descricaoInput: HTMLTextAreaElement,
   ) {
   const titulo = tituloInput.value;
   const descricao = descricaoInput.value;
-  const gravidade = this.prioridadeSelecionada;
+  const gravidade = 5;
 
   if (
     titulo.trim() === '' ||
@@ -99,8 +97,31 @@ export class Chamados {
     this.categoriaSelecionada = categoria;
   }
 
-  selecionarPrioridade(prioridade: number) {
-    this.prioridadeSelecionada = prioridade;
+  selecionarFiltroSindico(filtro: string) {
+    this.filtroSindico = filtro;
+    this.chamadoSelecionado = null;
+  }
+
+  chamadosFiltradosDoSindico() {
+    if (this.filtroSindico === 'aberto') {
+      return this.chamados.filter((chamado) => chamado.status === 'aberto');
+    }
+
+    if (this.filtroSindico === 'andamento') {
+      return this.chamados.filter((chamado) => chamado.status === 'andamento');
+    }
+
+    if (this.filtroSindico === 'resolvido') {
+      return this.chamados.filter((chamado) => chamado.status === 'resolvido');
+    }
+
+    return this.chamados;
+  }
+
+  textoStatus(chamado: Chamado) {
+    if (chamado.status === 'resolvido') return 'Concluído';
+    if (chamado.status === 'andamento') return 'Em andamento';
+    return 'Aberto';
   }
 
   selecionarFoto(input: HTMLInputElement) {
@@ -118,6 +139,44 @@ export class Chamados {
 
   selecionarChamado(chamado: Chamado) {
     this.chamadoSelecionado = chamado;
+    if (this.perfil === 'sindico') {
+      this.statusSelecionadoSindico = chamado.status;
+      this.telaChamados = 'detalheSindico';
+      this.telaMudou.emit('detalheSindico');
+    } else if (this.perfil === 'morador') {
+      this.telaChamados = 'detalheMorador';
+      this.telaMudou.emit('detalheMorador');
+    }
+  }
+
+  salvarDescricaoMorador(descricaoInput: HTMLTextAreaElement) {
+    if (
+      this.perfil !== 'morador' ||
+      this.chamadoSelecionado === null ||
+      this.chamadoSelecionado.criadoPor !== this.usuarioLogado
+    ) return;
+
+    const descricao = descricaoInput.value.trim();
+    if (descricao === '') {
+      this.mensagemErro = 'A descrição não pode ficar vazia.';
+      this.mensagemSucesso = '';
+      return;
+    }
+
+    this.chamadoSelecionado.descricao = descricao;
+    this.mensagemErro = '';
+    this.mensagemSucesso = 'Descrição atualizada com sucesso.';
+  }
+
+  selecionarStatusSindico(status: Chamado['status']) {
+    this.statusSelecionadoSindico = status;
+  }
+
+  salvarStatusSindico() {
+    if (this.perfil !== 'sindico' || this.chamadoSelecionado === null) return;
+
+    this.chamadoSelecionado.status = this.statusSelecionadoSindico;
+    this.mensagemSucesso = 'Status atualizado com sucesso.';
   }
 
   removerChamado(chamado: Chamado) {
@@ -155,12 +214,10 @@ export class Chamados {
 
     this.cancelarConfirmacao();
   }
-  abrirHistorico() {
-    this.telaChamados = 'historico';
-  }
-
   voltarParaChamados() {
     this.telaChamados = 'lista';
+    this.chamadoSelecionado = null;
+    this.telaMudou.emit('lista');
   }
   recuperarChamado(chamado: Chamado) {
     const indice = this.chamadosExcluidos.indexOf(chamado);

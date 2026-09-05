@@ -26,6 +26,10 @@ p.font {
   text-align: center;
 }
 
+.cabecalho-oculto {
+  display: none;
+}
+
 .cartao-acesso {
   width: min(calc(100% - 32px), 480px);
   margin: 32px auto;
@@ -107,6 +111,79 @@ p.font {
   grid-column: 1;
 }
 
+.painel-sindico {
+  width: 100%;
+  min-height: calc(100vh - 88px);
+  margin: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 0;
+  background: #f5f3ee;
+  box-shadow: none;
+}
+
+.cabecalho-painel-sindico {
+  padding: 30px 32px;
+  background: #272b2f;
+  color: #ffffff;
+}
+
+.cabecalho-painel-sindico h2,
+.cabecalho-painel-sindico p {
+  margin: 0;
+}
+
+.cabecalho-painel-sindico h2 { font-size: 24px; }
+.cabecalho-painel-sindico p { margin-top: 6px; color: #d8d6d0; font-size: 14px; }
+
+.indicadores-sindico {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  padding: 28px 32px 16px;
+}
+
+.indicadores-sindico article {
+  display: grid;
+  gap: 8px;
+  min-height: 110px;
+  padding: 18px;
+  border: 1px solid #e1ddd5;
+  border-radius: 12px;
+  background: #fffdfa;
+}
+
+.indicadores-sindico strong { font-size: 30px; line-height: 1; }
+.indicadores-sindico span { color: #4d4943; font-size: 14px; }
+.indicador-dourado { color: #bd8538; }
+.indicador-verde { color: #557762; }
+
+.titulo-acesso-rapido { margin: 14px 32px; font-size: 18px; }
+
+.acessos-rapidos { display: grid; gap: 12px; padding: 12px 32px 32px; }
+
+.acessos-rapidos button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 18px 20px;
+  border: 1px solid #e1ddd5;
+  border-radius: 12px;
+  background: #fffdfa;
+  color: #292929;
+  cursor: pointer;
+  text-align: left;
+}
+
+.acessos-rapidos button:hover { border-color: #bd8538; background: #fdf7ed; }
+.acessos-rapidos strong,
+.acessos-rapidos small { display: block; }
+.acessos-rapidos strong { font-size: 16px; }
+.acessos-rapidos small { margin-top: 5px; color: #918b81; font-size: 13px; }
+.acessos-rapidos mat-icon { color: #a67837; }
+
 .font2 {
   margin: 18px 0 0 !important;
   color: #292929 !important;
@@ -175,6 +252,12 @@ p.font {
 
 .botao-voltar:hover {
   background: #f0ede7;
+}
+
+.voltar-painel-sindico {
+  display: block;
+  width: fit-content;
+  margin: 18px 0 0 32px;
 }
 
 .mensagem-erro {
@@ -350,6 +433,14 @@ p.font {
     padding: 22px;
   }
 
+  .painel-sindico { width: 100%; min-height: calc(100vh - 76px); margin: 0; border: 0; border-radius: 0; box-shadow: none; }
+  .cabecalho-painel-sindico { padding: 28px 24px; }
+  .indicadores-sindico { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 20px 24px 10px; }
+  .indicadores-sindico article { min-height: 95px; padding: 16px; }
+  .indicadores-sindico strong { font-size: 28px; }
+  .titulo-acesso-rapido { margin: 18px 24px 10px; }
+  .acessos-rapidos { padding: 10px 24px 28px; }
+
   .inicio-landing,
   .pagina-perfil-vazia {
     width: calc(100% - 32px);
@@ -360,6 +451,10 @@ p.font {
   .inicio-landing h2,
   .pagina-perfil-vazia h2 {
     font-size: 24px;
+  }
+
+  .voltar-painel-sindico {
+    margin-left: 20px;
   }
 
   .barra-navegacao {
@@ -466,6 +561,24 @@ p.font {
   color: #d99a00;
   text-decoration: underline;
 }
+
+/* Paleta global: somente cores, sem alterar medidas ou posicionamento. */
+:host { background: var(--cor-input); color: var(--cor-card-escuro); }
+h1.font, p.font, .cabecalho-painel-sindico { background: var(--cor-fundo); }
+h1.font, .cabecalho-painel-sindico { color: var(--cor-texto); }
+p.font, .cabecalho-painel-sindico p { color: var(--cor-texto); }
+.cartao-acesso, .inicio-landing, .pagina-perfil-vazia, .painel-sindico { background: var(--cor-card); border-color: var(--cor-input); }
+.card-perfil, .indicadores-sindico article, .acessos-rapidos button { background: var(--cor-card); border-color: var(--cor-input); color: var(--cor-card-escuro); }
+.card-perfil:hover, .card-perfil[aria-pressed='true'], .acessos-rapidos button:hover { border-color: var(--cor-primaria); background: var(--cor-input); }
+.card-perfil span, .cartao-acesso > p, .texto-perfil, .inicio-landing > p:not(.inicio-etiqueta), .pagina-perfil-vazia p, .acessos-rapidos small { color: var(--cor-card-escuro); }
+.botao-continuar, .botao-entrar { background: var(--cor-fundo); border-color: var(--cor-fundo); color: var(--cor-texto); }
+.botao-continuar:hover, .botao-entrar:hover { background: var(--cor-card-escuro); }
+.campo-login input { background: var(--cor-input); border-color: var(--cor-primaria); color: var(--cor-card-escuro); }
+.campo-login input:focus { border-color: var(--cor-primaria); outline-color: var(--cor-input); }
+.indicador-dourado, .inicio-etiqueta, .acessos-rapidos mat-icon, .barra-navegacao button.ativo { color: var(--cor-primaria); }
+.barra-navegacao { background: var(--cor-card); border-top-color: var(--cor-input); }
+.barra-navegacao button:hover, .barra-navegacao button.ativo { background: var(--cor-input); color: var(--cor-card-escuro); }
+.barra-navegacao button.ativo::before { background: var(--cor-primaria); }
 
 /* Celular */
 @media (max-width: 600px) {

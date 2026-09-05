@@ -13,7 +13,7 @@ export type Chamado = {
   descricao: string;
   categoria: string;
   gravidade: number;
-  status: 'aberto' | 'resolvido';
+  status: 'aberto' | 'andamento' | 'resolvido';
   criadoPor: string;
   excluidoPor?: string;
   perfilCriador: string;
@@ -24,14 +24,14 @@ export class CondominioStore {
   readonly moradores: Morador[] = [];
   readonly chamados: Chamado[] = [
     { id: 1, titulo: 'Lâmpada quebrada no corredor', descricao: 'A lâmpada do corredor está queimada.', categoria: 'Manutenção', gravidade: 4, status: 'aberto', criadoPor: 'sindico@veritas.com', perfilCriador: 'sindico' },
-    { id: 2, titulo: 'Vazamento de água', descricao: 'Há um vazamento de água próximo à garagem.', categoria: 'Manutenção', gravidade: 9, status: 'aberto', criadoPor: 'sindico@veritas.com', perfilCriador: 'sindico' },
+    { id: 2, titulo: 'Vazamento de água', descricao: 'Há um vazamento de água próximo à garagem.', categoria: 'Manutenção', gravidade: 9, status: 'andamento', criadoPor: 'sindico@veritas.com', perfilCriador: 'sindico' },
     { id: 3, titulo: 'Portão da garagem', descricao: 'O portão precisou de manutenção.', categoria: 'Segurança', gravidade: 8, status: 'resolvido', criadoPor: 'sindico@veritas.com', perfilCriador: 'sindico' },
   ];
   readonly chamadosExcluidos: Chamado[] = [];
   private proximoCodigo = 1;
   private proximoChamadoId = 4;
 
-  cadastrarMorador(nome: string, bloco: string, apartamento: string): Morador {
+  cadastrarMorador(bloco: string, apartamento: string): Morador {
     const apartamentoJaCadastrado = this.moradores.some(
       (morador) =>
         morador.bloco.toLocaleLowerCase() === bloco.toLocaleLowerCase() &&
@@ -43,7 +43,7 @@ export class CondominioStore {
     }
 
     const codigo = `MOR-${String(this.proximoCodigo++).padStart(3, '0')}`;
-    const morador = { nome, bloco, apartamento, codigo };
+    const morador = { nome: 'Cadastro pendente', bloco, apartamento, codigo };
     this.moradores.push(morador);
     return morador;
   }

@@ -460,6 +460,11 @@ button.botao-secundario:hover {
   background: #b23d32;
 }
 
+.status-andamento {
+  background: #b47b35;
+  color: #ffffff;
+}
+
 .status-resolvido {
   background: #557762;
   color: #ffffff;
@@ -605,6 +610,279 @@ button.botao-secundario:hover {
 .meta-chamado {
   margin-top: 16px;
   font-size: 13px;
+}
+
+.solicitante-chamado {
+  margin: 12px 0 0;
+  color: #4d4943;
+  font-size: 13px;
+}
+
+.filtros-sindico {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 20px;
+}
+
+.filtros-sindico button {
+  width: auto;
+  margin: 0;
+  padding: 8px 13px;
+  border: 1px solid #dfd7ca;
+  border-radius: 999px;
+  background: #fffdfa;
+  color: #3e4143;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.filtros-sindico button:hover,
+.filtros-sindico button.filtro-ativo {
+  border-color: #bd8538;
+  background: #f7ead2;
+  color: #805b27;
+}
+
+.detalhe-sindico {
+  width: calc(100% + 64px);
+  max-width: none;
+  margin: -24px -32px 0;
+  padding-bottom: 30px;
+}
+
+.conteudo-detalhe {
+  width: min(calc(100% - 64px), 760px);
+  margin: 0 auto;
+  padding: 24px 0 30px;
+}
+
+.voltar-detalhe {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: auto;
+  margin: 0 0 18px;
+  padding: 8px 11px;
+  border: 1px solid #d5d0c7;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #4d4943;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.voltar-detalhe mat-icon {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+}
+
+.cabecalho-detalhe {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0;
+  padding: 26px 32px;
+  background: #272b2f;
+  color: #ffffff;
+}
+
+.circulo-detalhe {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: 50%;
+  background: #40454a;
+}
+
+.cabecalho-detalhe p,
+.cabecalho-detalhe span {
+  margin: 0;
+}
+
+.cabecalho-detalhe p {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.cabecalho-detalhe span {
+  display: block;
+  margin-top: 4px;
+  color: #d8d6d0;
+  font-size: 13px;
+}
+
+.status-detalhe {
+  display: inline-block;
+  margin-top: 12px;
+  margin-bottom: 16px;
+}
+
+.detalhe-morador .status-detalhe {
+  display: block;
+  width: fit-content;
+  margin-top: 20px;
+  margin-bottom: 18px;
+}
+
+.detalhe-sindico h2 {
+  margin: 0 0 24px;
+  color: #292929;
+  font-size: clamp(24px, 4vw, 34px);
+  line-height: 1.2;
+}
+
+.dados-chamado {
+  padding: 4px 18px;
+  border: 1px solid #e1ddd5;
+  border-radius: 12px;
+  background: #fffdfa;
+}
+
+.dados-chamado p {
+  display: grid;
+  grid-template-columns: minmax(110px, 0.8fr) minmax(0, 1.5fr);
+  gap: 12px;
+  margin: 14px 0;
+  font-size: 14px;
+}
+
+.dados-chamado span {
+  color: #918b81;
+}
+
+.descricao-detalhe {
+  margin-top: 28px;
+}
+
+.descricao-detalhe h3 {
+  margin: 0 0 10px;
+  font-size: 16px;
+}
+
+.descricao-detalhe p {
+  margin: 0;
+  color: #4d4943;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.titulo-editar-descricao {
+  display: block;
+  margin: 28px 0 10px;
+  color: #292929;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.textarea-editar-descricao {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 150px;
+  padding: 14px;
+  border: 1px solid #d5d0c7;
+  border-radius: 10px;
+  background: #fffdfa;
+  color: #4d4943;
+  font: inherit;
+  line-height: 1.55;
+  resize: vertical;
+}
+
+.textarea-editar-descricao:focus {
+  outline: 3px solid #e6e2da;
+  border-color: #292929;
+}
+
+.atualizar-status {
+  margin: 30px 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.atualizar-status legend {
+  margin-bottom: 12px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.atualizar-status legend span {
+  color: #726e67;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.atualizar-status > div {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.atualizar-status button {
+  padding: 12px 8px;
+  border: 1px solid #dfd7ca;
+  border-radius: 9px;
+  background: #fffdfa;
+  color: #292929;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.atualizar-status button:hover,
+.atualizar-status button.selecionado {
+  border-color: #bd8538;
+  background: #bd8538;
+  color: #ffffff;
+}
+
+.salvar-status {
+  width: 100%;
+  margin-top: 30px;
+  padding: 15px;
+  border: 0;
+  border-radius: 10px;
+  background: #272b2f;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.salvar-status:hover {
+  background: #4a4741;
+}
+
+@media (max-width: 600px) {
+  .detalhe-sindico {
+    width: calc(100% + 40px);
+    margin: -20px -20px 0;
+    padding-bottom: 12px;
+  }
+
+  .conteudo-detalhe {
+    width: calc(100% - 40px);
+    padding-top: 20px;
+  }
+
+  .cabecalho-detalhe {
+    padding: 22px 20px;
+  }
+
+  .dados-chamado p {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .atualizar-status > div {
+    gap: 7px;
+  }
+
+  .atualizar-status button {
+    padding: 11px 5px;
+    font-size: 12px;
+  }
 }
 
 .linha-chamado {
@@ -951,6 +1229,21 @@ button.botao-secundario:hover {
 .anexar-foto small {
   display: block;
 }
+
+/* Paleta global: somente cores, sem alterar medidas ou posicionamento. */
+:host { background: var(--cor-input); color: var(--cor-card-escuro); border-color: var(--cor-input); }
+.cabecalho-chamados, .cabecalho-detalhe, .identificacao-morador { background: var(--cor-fundo); color: var(--cor-texto); }
+.cabecalho-chamados p, .cabecalho-detalhe span, .identificacao-morador span { color: var(--cor-texto); }
+.lista-chamados .cartao-chamado, .dados-chamado, .formulario-chamado input, .formulario-chamado textarea, .textarea-editar-descricao, .opcao-categoria, .filtros-sindico button, .atualizar-status button, .anexar-foto { background: var(--cor-card); border-color: var(--cor-input); color: var(--cor-card-escuro); }
+.cartao-chamado h3, .detalhe-sindico h2, .descricao-detalhe h3, .titulo-editar-descricao { color: var(--cor-card-escuro); }
+.meta-chamado, .solicitante-chamado, .estado-vazio, .descricao-detalhe p { color: var(--cor-card-escuro); }
+.opcao-categoria:hover, .opcao-categoria.opcao-selecionada, .filtros-sindico button:hover, .filtros-sindico button.filtro-ativo, .atualizar-status button:hover, .atualizar-status button.selecionado, .anexar-foto:hover { border-color: var(--cor-primaria); background: var(--cor-input); color: var(--cor-card-escuro); }
+.status-aberto { background: #bd8538; color: var(--cor-texto); }
+.status-andamento { background: #b47b35; color: var(--cor-texto); }
+.status-resolvido { background: #557762; color: var(--cor-texto); }
+.botao-criar, .salvar-status, .botao-flutuante { background: var(--cor-fundo) !important; color: var(--cor-texto); }
+.botao-criar:hover, .salvar-status:hover { background: var(--cor-card-escuro); }
+.icone-foto, .circulo-detalhe { background: var(--cor-card-escuro); color: var(--cor-primaria); }
 
 .anexar-foto strong {
   font-size: 13px;

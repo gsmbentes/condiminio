@@ -29,7 +29,7 @@ body {
 }
 
 .page-content {
-  background-color: #DDD7CB;
+  background-color: var(--cor-input);
   padding: 1.5rem;
   min-height: 100vh;
 }

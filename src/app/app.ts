@@ -3,6 +3,8 @@ import { Chamados } from './chamados/chamados';
 import { Moradores } from './moradores/moradores';
 import { CadastroMorador } from './cadastro-morador/cadastro-morador';
 import { MatIconModule } from '@angular/material/icon';
+import { inject } from '@angular/core';
+import { CondominioStore } from './condominio.store';
 
 @Component({
   imports: [Chamados, Moradores, CadastroMorador, MatIconModule],
@@ -11,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './app.html',
 })
 export class App {
+  private readonly store = inject(CondominioStore);
   protected readonly title = signal('Veritas Condomínio');
   telaAtual = 'perfil';
   perfil_selecionado = '';
@@ -51,6 +54,10 @@ export class App {
     this.telaAtual = this.perfil_selecionado === 'sindico' ? 'painelSindico' : 'sistema';
   }
 
+  abrirTodosChamadosSindico() {
+    this.telaAtual = 'chamadosSindico';
+  }
+
   abrirMoradores() {
     this.telaAtual = 'moradores';
   }
@@ -74,5 +81,17 @@ export class App {
 
   atualizarTelaChamados(tela: string) {
     this.telaChamadosAtual = tela;
+  }
+
+  quantidadeAbertos() {
+    return this.store.chamados.filter((chamado) => chamado.status === 'aberto').length;
+  }
+
+  quantidadeEmAndamento() {
+    return this.store.chamados.filter((chamado) => chamado.status === 'andamento').length;
+  }
+
+  quantidadeConcluidos() {
+    return this.store.chamados.filter((chamado) => chamado.status === 'resolvido').length;
   }
 }

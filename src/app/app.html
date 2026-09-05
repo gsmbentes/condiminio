@@ -12,10 +12,14 @@
     de seu condomínio
   </p>
 
-} @else if (telaAtual === 'sistema' && perfil_selecionado === 'morador') {
+} @else if (telaAtual === 'sistema' && perfil_selecionado === 'morador' && telaChamadosAtual !== 'detalheMorador') {
 
   <h1 class="font">{{ telaChamadosAtual === 'novo' ? 'Novo chamado' : 'Meus chamados' }}</h1>
   <p class="font">{{ telaChamadosAtual === 'novo' ? 'Residencial Jardim das Acácias' : 'Gestão dos seus chamados.' }}</p>
+
+} @else if (telaAtual === 'sistema' && perfil_selecionado === 'morador' && telaChamadosAtual === 'detalheMorador') {
+
+  <span class="cabecalho-oculto" aria-hidden="true"></span>
 
 } @else if (telaAtual === 'inicio') {
 
@@ -26,6 +30,23 @@
 
   <h1 class="font">Perfil</h1>
   <p class="font">Sua área no Veritas.</p>
+
+} @else if (telaAtual === 'chamadosSindico' && telaChamadosAtual !== 'detalheSindico') {
+
+  <h1 class="font">Todos os chamados</h1>
+  <p class="font">Residencial Jardim das Acácias</p>
+
+} @else if (telaAtual === 'chamadosSindico' && telaChamadosAtual === 'detalheSindico') {
+
+  <span class="cabecalho-oculto" aria-hidden="true"></span>
+
+} @else if (telaAtual === 'moradores') {
+
+  <span class="cabecalho-oculto" aria-hidden="true"></span>
+
+} @else if (telaAtual === 'painelSindico') {
+
+  <span class="cabecalho-oculto" aria-hidden="true"></span>
 
 } @else {
 
@@ -118,7 +139,7 @@ Entrar
       Voltar ao painel do síndico
     </button>
   }
-  @if (perfil_selecionado === 'morador' && telaChamadosAtual !== 'novo') {
+  @if (perfil_selecionado === 'morador' && telaChamadosAtual !== 'novo' && telaChamadosAtual !== 'detalheMorador') {
     <button class="botao-voltar" (click)="sair()">
     Sair do app
   </button>
@@ -126,6 +147,18 @@ Entrar
 
   <app-chamados
     [perfil]="perfil_selecionado"
+    [usuarioLogado]="usuarioLogado"
+    (telaMudou)="atualizarTelaChamados($event)">
+  </app-chamados>
+}
+@if (telaAtual === 'chamadosSindico') {
+  @if (telaChamadosAtual !== 'detalheSindico') {
+    <button class="botao-voltar voltar-painel-sindico" type="button" (click)="voltarParaPainelSindico()">
+      Voltar ao painel do síndico
+    </button>
+  }
+  <app-chamados
+    perfil="sindico"
     [usuarioLogado]="usuarioLogado"
     (telaMudou)="atualizarTelaChamados($event)">
   </app-chamados>
@@ -146,24 +179,31 @@ Entrar
   </section>
 }
 @if (telaAtual === 'painelSindico') {
-  <section class="cartao-acesso">
-    <h2>Painel do Síndico</h2>
-    <p>Escolha uma função para gerenciar o condomínio.</p>
+  <section class="painel-sindico">
+    <header class="cabecalho-painel-sindico">
+      <h2>Painel do síndico</h2>
+      <p>Residencial Jardim das Acácias</p>
+    </header>
 
-    <button class="card-perfil card-painel" type="button" (click)="abrirChamados()">
-    <strong>Gerenciar chamados</strong>
-    <span>Resolva, exclua e veja o histórico de chamados.</span>
-    </button>
+    <div class="indicadores-sindico">
+      <article><strong>0</strong><span>Moradores cadastrados</span></article>
+      <article><strong class="indicador-dourado">{{  quantidadeAbertos() }}</strong><span>Chamados abertos</span></article>
+      <article><strong class="indicador-dourado">{{ quantidadeEmAndamento() }}</strong><span>Em andamento</span></article>
+      <article><strong class="indicador-verde">{{ quantidadeConcluidos() }}</strong><span>Concluídos</span></article>
+    </div>
 
+    <h3 class="titulo-acesso-rapido">Acesso rápido</h3>
+    <div class="acessos-rapidos">
+      <button type="button" (click)="abrirTodosChamadosSindico()">
+        <span><strong>Gerenciar chamados</strong><small>Ver e atualizar os chamados</small></span>
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
 
-    <button class="card-perfil card-painel" type="button" (click)="abrirMoradores()">
-    <strong>Cadastro de moradores</strong>
-    <span>Cadastre e consulte os moradores do condomínio.</span>
-    </button>
-
-    <button class="botao-voltar" (click)="sair()">
-      Sair do app
-    </button>
+      <button type="button" (click)="abrirMoradores()">
+        <span><strong>Gerar código de convite</strong><small>Liberar cadastro de uma unidade</small></span>
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
   </section>
 }
 @if (telaAtual === 'perfilUsuario') {
@@ -171,7 +211,7 @@ Entrar
     <div class="avatar-perfil" aria-hidden="true">
       <mat-icon>person</mat-icon>
     </div>
-    <h2>Perfil do morador</h2>
+    <h2>Perfil do {{ perfil_selecionado === 'sindico' ? 'síndico' : 'morador' }}</h2>
     <p>{{ usuarioLogado }}</p>
     <button class="botao-escolher-perfil" type="button" (click)="sair()">
       Voltar para escolha de perfil
@@ -179,11 +219,7 @@ Entrar
   </section>
 }
 @if (telaAtual === 'moradores') {
-  <button class="botao-voltar" (click)="voltarParaPainelSindico()">
-    Voltar ao painel do síndico
-  </button>
-
-  <app-moradores></app-moradores>
+  <app-moradores (voltarPainel)="voltarParaPainelSindico()"></app-moradores>
 } 
 @if (telaAtual === 'cadastroMorador') {
   
@@ -205,7 +241,7 @@ Entrar
       <span>Início</span>
     </button>
 
-    <button type="button" [class.ativo]="telaAtual === 'sistema' || telaAtual === 'painelSindico'" (click)="abrirChamados()">
+    <button type="button" [class.ativo]="telaAtual === 'sistema' || telaAtual === 'painelSindico' || telaAtual === 'chamadosSindico'" (click)="abrirChamados()">
       <mat-icon>assignment</mat-icon>
       <span>Chamados</span>
     </button>

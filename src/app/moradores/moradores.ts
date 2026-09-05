@@ -1,7 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, EventEmitter, Output, inject } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import { CondominioStore, Morador } from '../condominio.store';
 @Component({
-  imports: [],
+  imports: [MatIconModule],
   selector: 'app-moradores',
   styleUrl: './moradores.css',
   templateUrl: './moradores.html',
@@ -15,13 +16,17 @@ export class Moradores {
   mostrarModalConfirmacao = false;
   mostrarModalExclusao = false;
   moradorParaExcluir: Morador | null = null;
-  nomePendente = '';
   blocoPendente = '';
   apartamentoPendente = '';
+  @Output() voltarPainel = new EventEmitter<void>();
 
-  confirmarCadastro(nome: string, bloco: string, apartamento: string) {
-    if (nome.trim() === '' || bloco.trim() === '' || apartamento.trim() === '') {
-      this.erroCadastro = 'Preencha nome, bloco e apartamento.';
+  voltarParaPainel() {
+    this.voltarPainel.emit();
+  }
+
+  confirmarCadastro(bloco: string, apartamento: string) {
+    if (bloco.trim() === '' || apartamento.trim() === '') {
+      this.erroCadastro = 'Preencha bloco e apartamento.';
       this.codigoGerado = '';
       return;
     }
@@ -39,42 +44,37 @@ export class Moradores {
 
     this.erroCadastro = '';
     this.mensagemSucesso = '';
-    this.nomePendente = nome.trim();
     this.blocoPendente = bloco.trim();
     this.apartamentoPendente = apartamento.trim();
     this.mostrarModalConfirmacao = true;
   }
 
-  cadastrarMorador(nome: string, bloco: string, apartamento: string) {
-    if (nome.trim() === '' || bloco.trim() === '' || apartamento.trim() === '') {
-      this.erroCadastro = 'Preencha nome, bloco e apartamento.';
+  cadastrarMorador(bloco: string, apartamento: string) {
+    if (bloco.trim() === '' || apartamento.trim() === '') {
+      this.erroCadastro = 'Preencha bloco e apartamento.';
       return;
     }
 
     this.erroCadastro = '';
-    const morador = this.store.cadastrarMorador(nome.trim(), bloco.trim(), apartamento.trim());
+    const morador = this.store.cadastrarMorador(bloco.trim(), apartamento.trim());
     this.codigoGerado = morador.codigo;
   }
   cancelarConfirmacao() {
     this.mostrarModalConfirmacao = false;
-    this.nomePendente = '';
     this.blocoPendente = '';
     this.apartamentoPendente = '';
   }
 
   confirmarCadastroFinal(
-    nomeInput: HTMLInputElement,
     blocoInput: HTMLInputElement,
     apartamentoInput: HTMLInputElement,
   ) {
-    this.cadastrarMorador(this.nomePendente, this.blocoPendente, this.apartamentoPendente);
+    this.cadastrarMorador(this.blocoPendente, this.apartamentoPendente);
 
     this.mostrarModalConfirmacao = false;
-    this.nomePendente = '';
     this.blocoPendente = '';
     this.apartamentoPendente = '';
 
-    nomeInput.value = '';
     blocoInput.value = '';
     apartamentoInput.value = '';
   }

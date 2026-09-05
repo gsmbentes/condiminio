@@ -1,15 +1,103 @@
 :host {
   display: block;
-  max-width: 850px;
-  margin: 32px auto;
+  width: 100%;
+  max-width: none;
+  margin: 0;
 }
 
 .cartao-moradores {
-  padding: 32px;
+  min-height: calc(100vh - 88px);
+  overflow: hidden;
+  padding: 0 32px 96px;
+  border: 0;
+  border-radius: 0;
+  background-color: #f5f3ee;
+  box-shadow: none;
+}
+
+.cabecalho-convite {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0 -32px;
+  padding: 28px 32px;
+  background: #272b2f;
+  color: #ffffff;
+}
+
+.acoes-convite {
+  width: min(100%, 920px);
+  margin: 18px auto 0;
+}
+
+.acoes-convite .botao-voltar-painel {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: auto;
+  margin: 0;
+  padding: 9px 12px;
+  border: 1px solid #d5d0c7;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #4d4943;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.acoes-convite .botao-voltar-painel:hover {
+  background: #f0ede7;
+  transform: none;
+}
+
+.acoes-convite mat-icon {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+}
+
+.icone-convite {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: 50%;
+  background: #40454a;
+  color: #d4a14c;
+}
+
+.cabecalho-convite h2,
+.cabecalho-convite p {
+  margin: 0;
+}
+
+.cabecalho-convite h2 { font-size: 22px; }
+.cabecalho-convite p { margin-top: 4px; color: #d8d6d0; font-size: 13px; }
+
+.formulario-convite {
+  width: min(100%, 920px);
+  box-sizing: border-box;
+  margin-top: 26px;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 22px;
   border: 1px solid #e4e0d8;
-  border-radius: 14px;
-  background-color: white;
-  box-shadow: 0 10px 28px rgba(46, 42, 35, 0.07);
+  border-radius: 12px;
+  background: #fbfaf8;
+}
+
+.texto-orientacao {
+  margin: 0;
+  color: #726e67;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.campos-unidade {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
 }
 
 .campo-morador {
@@ -26,9 +114,21 @@
   width: 100%;
   box-sizing: border-box;
   padding: 12px;
-  border: 1px solid #cbd5e1;
+  border: 1px solid #d5d0c7;
+  background: #fffdfa;
   border-radius: 8px;
   font-size: 16px;
+}
+
+.cartao-moradores .botao-gerar-convite {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: auto;
+  margin-top: 22px;
+  padding: 12px 18px;
+  font-size: 14px;
 }
 
 .campo-morador input:focus {
@@ -58,12 +158,31 @@
 }
 
 .codigo-gerado {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   margin-top: 20px;
   padding: 16px;
   border: 1px solid #86efac;
   border-radius: 10px;
   background-color: #f0fdf4;
   color: #166534;
+}
+
+.codigo-gerado mat-icon { color: #166534; }
+.codigo-gerado p { margin: 5px 0 0; }
+.codigo-gerado b { letter-spacing: 0.05em; }
+
+.lista-convites {
+  width: min(100%, 920px);
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 28px;
+}
+
+.lista-convites h3 {
+  margin: 0 0 12px;
+  font-size: 18px;
 }
 
 .cartao-morador {
@@ -178,13 +297,27 @@
     width: 100%;
   }
   :host {
-  margin: 16px auto;
+  margin: 0;
 }
 
 .cartao-moradores {
-  padding: 20px;
-  border-radius: 10px;
+  min-height: calc(100vh - 76px);
+  padding: 0 20px 88px;
+  border-radius: 0;
 }
+
+  .cabecalho-convite {
+    margin: 0 -20px;
+    padding: 24px 20px;
+  }
+
+  .acoes-convite {
+    margin-top: 14px;
+  }
+
+  .formulario-convite { padding: 18px; }
+  .campos-unidade { grid-template-columns: 1fr; gap: 0; }
+  .cartao-moradores .botao-gerar-convite { width: 100%; }
 
   .cartao-morador {
   padding: 14px;
@@ -194,3 +327,16 @@
   width: 100%;
 }
 }
+
+/* Paleta global: somente cores, sem alterar medidas ou posicionamento. */
+:host, .cartao-moradores { background: var(--cor-input); color: var(--cor-card-escuro); }
+.cabecalho-convite { background: var(--cor-fundo); color: var(--cor-texto); }
+.cabecalho-convite p { color: var(--cor-texto); }
+.icone-convite { background: var(--cor-card-escuro); color: var(--cor-primaria); }
+.formulario-convite, .cartao-morador, .modal-confirmacao { background: var(--cor-card); border-color: var(--cor-input); }
+.campo-morador input { background: var(--cor-input); border-color: var(--cor-primaria); color: var(--cor-card-escuro); }
+.campo-morador input:focus { border-color: var(--cor-primaria); box-shadow: 0 0 0 3px var(--cor-input); }
+.cartao-moradores .botao-gerar-convite { background: var(--cor-fundo); color: var(--cor-texto); }
+.cartao-moradores .botao-gerar-convite:hover { background: var(--cor-card-escuro); }
+.codigo-gerado, .mensagem-sucesso { background: var(--cor-input); border-color: var(--cor-primaria); color: var(--cor-card-escuro); }
+.codigo-gerado mat-icon { color: var(--cor-primaria); }

@@ -83,6 +83,14 @@
   }
 }
 
+/* Paleta global: somente cores, sem alterar medidas ou posicionamento. */
+:host { color: var(--cor-card-escuro); }
+.cartao-cadastro { background: var(--cor-card); border-color: var(--cor-input); }
+input { background: var(--cor-input); border-color: var(--cor-primaria); color: var(--cor-card-escuro); }
+input:focus { border-color: var(--cor-primaria); box-shadow: 0 0 0 3px var(--cor-input); }
+button { background: var(--cor-fundo); color: var(--cor-texto); }
+button:hover { background: var(--cor-card-escuro); }
+
 .campo-dourado {
   background-color: white;
   color: black;

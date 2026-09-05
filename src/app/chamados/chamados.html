@@ -1,30 +1,28 @@
 @if (telaChamados === 'lista') {
   @if (perfil === 'sindico') {
-    <div class="acoes-lista">
-      <button class="botao-secundario" (click)="abrirHistorico()">Ver histórico</button>
-    </div>
-  }
-
-  <section class="resumo-chamados">
-    @if (perfil === 'morador') {
+    <section class="filtros-sindico" aria-label="Filtrar chamados por status">
+      <button type="button" [class.filtro-ativo]="filtroSindico === 'todos'" (click)="selecionarFiltroSindico('todos')">Todos</button>
+      <button type="button" [class.filtro-ativo]="filtroSindico === 'aberto'" (click)="selecionarFiltroSindico('aberto')">Aberto</button>
+      <button type="button" [class.filtro-ativo]="filtroSindico === 'andamento'" (click)="selecionarFiltroSindico('andamento')">Em andamento</button>
+      <button type="button" [class.filtro-ativo]="filtroSindico === 'resolvido'" (click)="selecionarFiltroSindico('resolvido')">Concluído</button>
+    </section>
+  } @else {
+    <section class="resumo-chamados">
       <p><strong>{{ chamadosDoMorador().length }}</strong> chamados criados</p>
       <p><strong>{{ quantidadeAbertosDoMorador() }}</strong> aguardando atendimento</p>
-    } @else {
-      <p><strong>{{ chamados.length }}</strong> chamados no total</p>
-      <p><strong>{{ quantidadeAbertos() }}</strong> aguardando atendimento</p>
-    }
-  </section>
+    </section>
+  }
 
   @if (perfil === 'morador' && chamadosDoMorador().length === 0) {
     <p class="estado-vazio">Você ainda não abriu nenhum chamado. Use o botão + para criar o primeiro.</p>
   }
 
-  @if (perfil === 'sindico' && chamados.length === 0) {
+  @if (perfil === 'sindico' && chamadosFiltradosDoSindico().length === 0) {
     <p class="estado-vazio">Não há chamados no momento.</p>
   }
 
   <section class="lista-chamados">
-    @for (chamado of ordenarPorUrgencia(perfil === 'morador' ? chamadosDoMorador() : chamados); track chamado.id) {
+    @for (chamado of (perfil === 'morador' ? chamadosDoMorador() : ordenarPorUrgencia(chamadosFiltradosDoSindico())); track chamado.id) {
       <article
         class="cartao-chamado"
         [class.chamado-selecionado]="chamadoSelecionado === chamado"
@@ -35,13 +33,16 @@
 
           @if (chamado.status === 'resolvido') {
             <span class="status status-resolvido">Concluído</span>
-          } @else if (chamado.gravidade >= 8) {
-            <span class="status status-urgente">Urgente</span>
+          } @else if (chamado.status === 'andamento') {
+            <span class="status status-andamento">Em andamento</span>
           } @else {
             <span class="status status-aberto">Aberto</span>
           }
         </div>
 
+        @if (perfil === 'sindico') {
+          <p class="solicitante-chamado">{{ chamado.criadoPor }}</p>
+        }
         <p class="meta-chamado">#{{ chamado.id }} · {{ chamado.categoria }}</p>
       </article>
     }
@@ -85,6 +86,117 @@
   }
 }
 
+@if (telaChamados === 'detalheMorador' && chamadoSelecionado !== null) {
+  <section class="detalhe-sindico detalhe-morador">
+    <header class="cabecalho-detalhe">
+      <div class="circulo-detalhe"><mat-icon>assignment</mat-icon></div>
+      <div>
+        <p>Chamado #{{ chamadoSelecionado.id }}</p>
+        <span>Residencial Jardim das Acácias</span>
+      </div>
+    </header>
+
+    <div class="conteudo-detalhe">
+      <button class="voltar-detalhe" type="button" (click)="voltarParaChamados()">
+        <mat-icon>arrow_back</mat-icon>
+        Voltar para lista
+      </button>
+
+      <span
+        class="status status-detalhe"
+        [class.status-aberto]="chamadoSelecionado.status === 'aberto'"
+        [class.status-andamento]="chamadoSelecionado.status === 'andamento'"
+        [class.status-resolvido]="chamadoSelecionado.status === 'resolvido'"
+      >
+        {{ textoStatus(chamadoSelecionado) }}
+      </span>
+
+      <h2>{{ chamadoSelecionado.titulo }}</h2>
+
+      <section class="dados-chamado">
+        <p><span>Categoria</span><strong>{{ chamadoSelecionado.categoria }}</strong></p>
+        <p><span>Status atual</span><strong>{{ textoStatus(chamadoSelecionado) }}</strong></p>
+      </section>
+
+      <label class="titulo-editar-descricao" for="descricao-morador">Descrição</label>
+      <textarea
+        id="descricao-morador"
+        #descricaoMoradorInput
+        class="textarea-editar-descricao"
+        rows="6"
+        [value]="chamadoSelecionado.descricao"
+      ></textarea>
+
+      @if (mensagemErro !== '') {
+        <p class="mensagem-erro">{{ mensagemErro }}</p>
+      }
+      @if (mensagemSucesso !== '') {
+        <p class="mensagem-sucesso">{{ mensagemSucesso }}</p>
+      }
+
+      <button class="salvar-status" type="button" (click)="salvarDescricaoMorador(descricaoMoradorInput)">
+        Salvar alteração
+      </button>
+    </div>
+  </section>
+}
+
+@if (telaChamados === 'detalheSindico' && chamadoSelecionado !== null) {
+  <section class="detalhe-sindico">
+    <header class="cabecalho-detalhe">
+      <div class="circulo-detalhe"><mat-icon>assignment</mat-icon></div>
+      <div>
+        <p>Chamado #{{ chamadoSelecionado.id }}</p>
+        <span>Residencial Jardim das Acácias</span>
+      </div>
+    </header>
+
+    <div class="conteudo-detalhe">
+      <button class="voltar-detalhe" type="button" (click)="voltarParaChamados()">
+        <mat-icon>arrow_back</mat-icon>
+        Voltar para chamados
+      </button>
+
+      <span
+        class="status status-detalhe"
+        [class.status-aberto]="statusSelecionadoSindico === 'aberto'"
+        [class.status-andamento]="statusSelecionadoSindico === 'andamento'"
+        [class.status-resolvido]="statusSelecionadoSindico === 'resolvido'"
+      >
+        {{ statusSelecionadoSindico === 'resolvido' ? 'Concluído' : statusSelecionadoSindico === 'andamento' ? 'Em andamento' : 'Aberto' }}
+      </span>
+
+      <h2>{{ chamadoSelecionado.titulo }}</h2>
+
+      <section class="dados-chamado">
+        <p><span>Morador</span><strong>{{ chamadoSelecionado.criadoPor }}</strong></p>
+        <p><span>Categoria</span><strong>{{ chamadoSelecionado.categoria }}</strong></p>
+        <p><span>Status atual</span><strong>{{ textoStatus(chamadoSelecionado) }}</strong></p>
+      </section>
+
+      <section class="descricao-detalhe">
+        <h3>Descrição</h3>
+        <p>{{ chamadoSelecionado.descricao }}</p>
+      </section>
+
+      <fieldset class="atualizar-status">
+        <legend>Atualizar status</legend>
+        <div>
+          <button type="button" [class.selecionado]="statusSelecionadoSindico === 'aberto'" (click)="selecionarStatusSindico('aberto')">Aberto</button>
+          <button type="button" [class.selecionado]="statusSelecionadoSindico === 'andamento'" (click)="selecionarStatusSindico('andamento')">Em andamento</button>
+          <button type="button" [class.selecionado]="statusSelecionadoSindico === 'resolvido'" (click)="selecionarStatusSindico('resolvido')">Concluído</button>
+        </div>
+      </fieldset>
+
+      @if (mensagemSucesso !== '') {
+        <p class="mensagem-sucesso">{{ mensagemSucesso }}</p>
+      }
+
+      <button class="salvar-status" type="button" (click)="salvarStatusSindico()">Salvar alteração</button>
+    </div>
+  </section>
+}
+
 @if (telaChamados === 'novo') {
   <section class="formulario-chamado">
     <section class="identificacao-morador" aria-label="Dados do morador">
@@ -116,21 +228,6 @@
             {{ categoria }}
           </button>
         }
-      </div>
-    </fieldset>
-
-    <fieldset class="grupo-escolha">
-      <legend>Prioridade</legend>
-      <div class="opcoes-prioridade">
-        <button type="button" class="opcao-prioridade baixa" [class.opcao-selecionada]="prioridadeSelecionada === 2" (click)="selecionarPrioridade(2)">
-          <span></span>Baixa
-        </button>
-        <button type="button" class="opcao-prioridade media" [class.opcao-selecionada]="prioridadeSelecionada === 5" (click)="selecionarPrioridade(5)">
-          <span></span>Média
-        </button>
-        <button type="button" class="opcao-prioridade urgente" [class.opcao-selecionada]="prioridadeSelecionada === 9" (click)="selecionarPrioridade(9)">
-          <span></span>Urgente
-        </button>
       </div>
     </fieldset>
 
